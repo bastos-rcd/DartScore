@@ -1,2 +1,3 @@
 # DartScore
-Dart counter application
+
+Dart score counter application
