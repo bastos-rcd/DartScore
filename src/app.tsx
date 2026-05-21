@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Menu from '@/components/menu'
 import Divider from '@/components/ui/divider'
 import Home from '@/pages/home'
+import Game from '@/pages/game'
 
 export default function App() {
 	return (
@@ -15,6 +16,7 @@ export default function App() {
 				<main className="flex min-h-0 flex-1 flex-col gap-4">
 					<Routes>
 						<Route path="/" element={<Home />} />
+						<Route path="/game" element={<Game />} />
 					</Routes>
 				</main>
 			</div>
