@@ -1,3 +1,4 @@
+import type { Player } from '@/models/player'
 import { gameStore } from '@/store/game'
 
 const SECTORS = [
@@ -10,7 +11,7 @@ const getCoordinates = (percent: number) => {
 	return [x, y]
 }
 
-export default function GameTarget(props: { playerId: string }) {
+export default function GameTarget(props: { player: Player }) {
 	const { addDart } = gameStore()
 
 	const handleClick = (value: number, multiplier: number) => {
@@ -25,7 +26,7 @@ export default function GameTarget(props: { playerId: string }) {
 			id: crypto.randomUUID(),
 			label,
 			score: totalScore,
-			playerId: props.playerId,
+			playerId: props.player.id,
 		})
 	}
 

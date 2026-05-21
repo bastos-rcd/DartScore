@@ -5,6 +5,7 @@ import type { Player } from '@/models/player'
 import { gameStore } from '@/store/game'
 
 import GameTarget from '@/components/game/game-target'
+import GameCurrent from '@/components/game/game-current'
 
 export default function Game() {
 	const navigate = useNavigate()
@@ -43,7 +44,9 @@ export default function Game() {
 
 	return (
 		<>
-			<GameTarget playerId={current?.id || ''} />
+			<GameTarget player={current ?? players[0]} />
+
+			<GameCurrent player={current ?? players[0]} />
 		</>
 	)
 }
