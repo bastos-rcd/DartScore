@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import Menu from '@/components/menu'
-import Home from './pages/home'
+import Divider from '@/components/ui/divider'
+import Home from '@/pages/home'
 
 export default function App() {
 	return (
@@ -9,9 +10,9 @@ export default function App() {
 			<div className="flex h-dvh max-h-dvh flex-col-reverse gap-4 overflow-hidden p-4">
 				<Menu />
 
-				<hr className="h-0.5 border-0 bg-(--border)" />
+				<Divider />
 
-				<main className="flex-1">
+				<main className="flex min-h-0 flex-1 flex-col gap-4">
 					<Routes>
 						<Route path="/" element={<Home />} />
 					</Routes>
