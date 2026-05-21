@@ -1,7 +1,7 @@
-import type { User } from '@/models/user'
+import type { Player } from '@/models/player'
 
-export async function getUsers(): Promise<User[]> {
-	const users = [
+export async function getPlayers(): Promise<Player[]> {
+	const players = [
 		{
 			id: '1',
 			name: 'Bastien',
@@ -24,5 +24,5 @@ export async function getUsers(): Promise<User[]> {
 		},
 	]
 
-	return users
+	return players
 }

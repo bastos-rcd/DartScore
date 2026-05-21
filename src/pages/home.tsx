@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import type { User } from '@/models/user'
+import type { Player } from '@/models/player'
 import { gameStore } from '@/store/game'
-import { getUsers } from '@/services/user.service'
+import { getPlayers } from '@/services/player.service'
 
 import Divider from '@/components/ui/divider'
 
 export default function Home() {
 	const navigate = useNavigate()
 
-	const { status, setStatus, users, setUsers, addUser, removeUser } =
+	const { status, setStatus, players, setPlayers, addPlayer, removePlayer } =
 		gameStore()
 
-	const [dbUsers, setDbUsers] = useState<User[]>([])
+	const [dbPlayers, setDbPlayers] = useState<Player[]>([])
 
 	useEffect(() => {
 		if (status) {
@@ -21,18 +21,18 @@ export default function Home() {
 			return
 		}
 
-		getUsers().then((res) => setDbUsers(res))
+		getPlayers().then((data) => setDbPlayers(data))
 	}, [status])
 
-	const handleCheck = (user: User) => {
-		if (users.includes(user)) removeUser([user])
-		else addUser([user])
+	const handleCheck = (player: Player) => {
+		if (players.includes(player)) removePlayer([player])
+		else addPlayer([player])
 	}
 
 	const handleStart = () => {
-		if (users.length === 0) return
+		if (players.length === 0) return
 
-		setUsers(users.toSorted(() => Math.random() - 0.5))
+		setPlayers(players.toSorted(() => Math.random() - 0.5))
 		setStatus(true)
 	}
 
@@ -42,27 +42,27 @@ export default function Home() {
 
 			<Divider />
 
-			<h1 className="text-center">{users.length} joueur(s) sélectionné(s)</h1>
+			<h1 className="text-center">{players.length} joueur(s) sélectionné(s)</h1>
 
 			<div className="flex w-2/3 flex-1 flex-col gap-2 self-center overflow-y-auto">
-				{dbUsers.map((user) => (
+				{dbPlayers.map((player) => (
 					<div
-						key={user.id}
-						onClick={() => handleCheck(user)}
+						key={player.id}
+						onClick={() => handleCheck(player)}
 						className="flex flex-row items-center gap-2 rounded-xl bg-(--border)/60 p-2"
 					>
-						{users.includes(user) ? (
+						{players.includes(player) ? (
 							<i className="fa-solid fa-circle-check fa-lg"></i>
 						) : (
 							<i className="fa-regular fa-circle fa-lg"></i>
 						)}
 
-						<span className="font-semibold">{user.name}</span>
+						<span className="font-semibold">{player.name}</span>
 					</div>
 				))}
 			</div>
 
-			{users.length > 0 && (
+			{players.length > 0 && (
 				<button
 					onClick={handleStart}
 					className="self-center rounded-xl bg-(--green) px-4 py-2 font-bold"

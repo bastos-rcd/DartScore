@@ -1,3 +1,5 @@
+import { gameStore } from '@/store/game'
+
 const SECTORS = [
 	20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5,
 ]
@@ -8,7 +10,9 @@ const getCoordinates = (percent: number) => {
 	return [x, y]
 }
 
-export default function GameTarget() {
+export default function GameTarget(props: { playerId: string }) {
+	const { addDart } = gameStore()
+
 	const handleClick = (value: number, multiplier: number) => {
 		const totalScore = value * multiplier
 
@@ -17,7 +21,12 @@ export default function GameTarget() {
 		if (multiplier === 2) label = `D${value}`
 		if (multiplier === 3) label = `T${value}`
 
-		console.log(`🎯 Touché : ${label} | Score ajouté : ${totalScore}`)
+		addDart({
+			id: crypto.randomUUID(),
+			label,
+			score: totalScore,
+			playerId: props.playerId,
+		})
 	}
 
 	return (

@@ -19,7 +19,7 @@ export default function Game() {
 
 	return (
 		<>
-			<GameTarget />
+			<GameTarget playerId="" />
 		</>
 	)
 }

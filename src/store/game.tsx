@@ -1,27 +1,37 @@
 import { create } from 'zustand'
 
-import type { User } from '@/models/user'
+import type { Player } from '@/models/player'
+import type { Dart } from '@/models/dart'
 
 interface State {
 	status: boolean
 	setStatus: (status: boolean) => void
 
-	users: User[]
-	setUsers: (users: User[]) => void
-	addUser: (users: User[]) => void
-	removeUser: (users: User[]) => void
+	players: Player[]
+	setPlayers: (players: Player[]) => void
+	addPlayer: (players: Player[]) => void
+	removePlayer: (players: Player[]) => void
+
+	darts: Dart[]
+	addDart: (dart: Dart) => void
+	removeDart: (dart: Dart) => void
 }
 
 export const gameStore = create<State>((set) => ({
 	status: false,
 	setStatus: (status: boolean) => set({ status }),
 
-	users: [],
-	setUsers: (users: User[]) => set({ users }),
-	addUser: (users: User[]) =>
-		set((state) => ({ users: [...state.users, ...users] })),
-	removeUser: (users: User[]) =>
+	players: [],
+	setPlayers: (players: Player[]) => set({ players }),
+	addPlayer: (players: Player[]) =>
+		set((state) => ({ players: [...state.players, ...players] })),
+	removePlayer: (players: Player[]) =>
 		set((state) => ({
-			users: state.users.filter((user) => !users.includes(user)),
+			players: state.players.filter((player) => !players.includes(player)),
 		})),
+
+	darts: [],
+	addDart: (dart: Dart) => set((state) => ({ darts: [...state.darts, dart] })),
+	removeDart: (dart: Dart) =>
+		set((state) => ({ darts: state.darts.filter((d) => d !== dart) })),
 }))
