@@ -6,7 +6,7 @@ import Home from './pages/home'
 export default function App() {
 	return (
 		<Router>
-			<div className="flex h-screen max-h-screen flex-col-reverse gap-4 overflow-hidden p-4">
+			<div className="flex h-dvh max-h-dvh flex-col-reverse gap-4 overflow-hidden p-4">
 				<Menu />
 
 				<hr className="h-0.5 border-0 bg-(--border)" />
