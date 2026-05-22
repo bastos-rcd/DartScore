@@ -2,6 +2,8 @@ import { create } from 'zustand'
 
 import type { Player } from '@/models/player'
 import type { Dart } from '@/models/dart'
+import type { Game } from '@/models/game'
+import { gameService } from '@/services/game.service'
 
 interface State {
 	status: boolean
@@ -47,15 +49,32 @@ export const gameStore = create<State>((set, get) => ({
 			classment: [...state.classment, player],
 		})),
 
-	isSaving: true,
+	isSaving: false,
 	saveGame: async () => {
-		const { darts, players, classment, isSaving } = get()
+		const { classment, isSaving } = get()
 
 		if (isSaving) return
 
 		set({ isSaving: true })
 
 		try {
+			const result: { player: Player; score: number }[] = []
+
+			classment.forEach((player, index) => {
+				result.push({
+					player,
+					score: classment.length - index,
+				})
+			})
+
+			const game: Game = {
+				id: crypto.randomUUID(),
+				classment: result,
+				date: new Date().toLocaleDateString('fr-FR'),
+			}
+
+			await gameService.addGame(game)
+
 			set({
 				status: false,
 				players: [],

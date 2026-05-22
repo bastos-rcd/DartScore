@@ -39,7 +39,7 @@ export default function GameCurrent(props: { player: Player }) {
 	const handleSave = () => {
 		if (confirm('Voulez-vous arrêter et sauvegarder cette partie ?')) {
 			saveGame().then(() => {
-				navigate('/history')
+				navigate('/rank')
 			})
 		}
 	}

@@ -18,7 +18,7 @@ export default function Game() {
 
 	useEffect(() => {
 		if (!status) {
-			navigate('/history')
+			navigate('/rank')
 			return
 		}
 
