@@ -6,4 +6,8 @@ export const playerService = {
 	async getPlayers(): Promise<Player[]> {
 		return await db.users.toArray()
 	},
+
+	async addPlayer(player: Player): Promise<string> {
+		return await db.users.add(player)
+	},
 }

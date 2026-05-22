@@ -4,6 +4,7 @@ import Menu from '@/components/menu'
 import Divider from '@/components/ui/divider'
 import Home from '@/pages/home'
 import Game from '@/pages/game'
+import Players from '@/pages/players'
 
 export default function App() {
 	return (
@@ -17,6 +18,7 @@ export default function App() {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/game" element={<Game />} />
+						<Route path="/players" element={<Players />} />
 					</Routes>
 				</main>
 			</div>
