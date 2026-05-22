@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import type { Player } from '@/models/player'
 import type { Dart } from '@/models/dart'
 import { gameStore } from '@/store/game'
 
-export default function GameCurrent(props: { player: Player }) {
-	const { darts, removeDart } = gameStore()
+import GameItem from '@/components/game/game-item'
 
-	const [last, setLast] = useState<Dart[]>()
+export default function GameCurrent(props: { player: Player }) {
+	const navigate = useNavigate()
+
+	const { darts, removeDart, saveGame } = gameStore()
+
+	const [last, setLast] = useState<Dart[]>([])
 
 	useEffect(() => {
-		console.log(props.player)
-
 		const thrown = darts.filter((d) => d.playerId === props.player.id)
 
 		if (thrown.length % 3 == 1) {
@@ -33,9 +36,17 @@ export default function GameCurrent(props: { player: Player }) {
 		removeDart(darts[darts.length - 1])
 	}
 
+	const handleSave = () => {
+		if (confirm('Voulez-vous arrêter et sauvegarder cette partie ?')) {
+			saveGame().then(() => {
+				navigate('/history')
+			})
+		}
+	}
+
 	return (
 		<>
-			<div className="flex flex-row items-center">
+			<div className="flex flex-row items-center gap-2">
 				<h1 className="flex-1">Au tour de : {props.player.name}</h1>
 
 				<button
@@ -44,17 +55,21 @@ export default function GameCurrent(props: { player: Player }) {
 				>
 					<i className="fa-solid fa-arrow-rotate-left fa-sm"></i>
 				</button>
+
+				<button
+					onClick={handleSave}
+					className="rounded-xl bg-(--green) px-2 py-1.5"
+				>
+					<i className="fa-solid fa-floppy-disk"></i>
+				</button>
 			</div>
 
 			<div className="flex flex-row justify-center gap-4">
-				{last?.map((dart) => (
-					<span
-						key={dart.id}
-						className="rounded-xl bg-(--border) px-3 py-2 font-bold"
-					>
-						{dart.label}
-					</span>
-				))}
+				{last.length > 0 ? <GameItem label={last[0].label} /> : <GameItem />}
+
+				{last.length > 1 ? <GameItem label={last[1].label} /> : <GameItem />}
+
+				{last.length > 2 ? <GameItem label={last[2].label} /> : <GameItem />}
 			</div>
 		</>
 	)

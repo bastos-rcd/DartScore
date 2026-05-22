@@ -12,15 +12,59 @@ const getCoordinates = (percent: number) => {
 }
 
 export default function GameTarget(props: { player: Player }) {
-	const { addDart } = gameStore()
+	const { darts, addDart, classment, setClassment } = gameStore()
 
 	const handleClick = (value: number, multiplier: number) => {
-		const totalScore = value * multiplier
+		let totalScore = value * multiplier
+		let label =
+			multiplier === 2
+				? `D${value}`
+				: multiplier === 3
+					? `T${value}`
+					: `${totalScore}`
 
-		let label = `${totalScore}`
+		const allPlayerDarts = darts.filter((d) => d.playerId === props.player.id)
 
-		if (multiplier === 2) label = `D${value}`
-		if (multiplier === 3) label = `T${value}`
+		const currentTurnCount = allPlayerDarts.length % 3
+
+		const previousTurnsDarts = allPlayerDarts.slice(
+			0,
+			allPlayerDarts.length - currentTurnCount,
+		)
+
+		const currentTurnDarts = allPlayerDarts.slice(
+			allPlayerDarts.length - currentTurnCount,
+		)
+
+		const scoreAtStartOfTurn = previousTurnsDarts.reduce(
+			(a, b) => a + b.score,
+			0,
+		)
+		const scoreScoredThisTurn = currentTurnDarts.reduce(
+			(a, b) => a + b.score,
+			0,
+		)
+
+		if (301 - (scoreAtStartOfTurn + scoreScoredThisTurn + totalScore) < 0) {
+			const dartsToAddCount = 3 - currentTurnCount
+			const compensationScore = -scoreScoredThisTurn
+
+			for (let i = 0; i < dartsToAddCount; i++) {
+				addDart({
+					id: crypto.randomUUID(),
+					label: i === 0 ? 'BUST' : '0',
+					score: i === 0 ? compensationScore : 0,
+					playerId: props.player.id,
+				})
+			}
+			return
+		}
+
+		if (301 - (scoreAtStartOfTurn + scoreScoredThisTurn + totalScore) === 0) {
+			if (!classment.includes(props.player)) {
+				setClassment(props.player)
+			}
+		}
 
 		addDart({
 			id: crypto.randomUUID(),
