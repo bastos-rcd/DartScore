@@ -1,5 +1,5 @@
 import PlayersCreate from '@/components/players/players-create'
-import Divider from '@/components/ui/divider'
+import Divider from '@/components/divider'
 import PlayersList from '@/components/players/players-list'
 
 export default function Players() {

@@ -51,7 +51,7 @@ export const gameStore = create<State>((set, get) => ({
 
 	isSaving: false,
 	saveGame: async () => {
-		const { classment, isSaving } = get()
+		const { players, classment, isSaving } = get()
 
 		if (isSaving) return
 
@@ -60,10 +60,12 @@ export const gameStore = create<State>((set, get) => ({
 		try {
 			const result: { player: Player; score: number }[] = []
 
-			classment.forEach((player, index) => {
+			players.forEach((player) => {
+				const index = classment.findIndex((c) => c.id === player.id)
+
 				result.push({
-					player,
-					score: classment.length - index,
+					player: player,
+					score: index > -1 ? players.length - index : 0,
 				})
 			})
 

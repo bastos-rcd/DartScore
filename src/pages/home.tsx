@@ -5,7 +5,7 @@ import type { Player } from '@/models/player'
 import { gameStore } from '@/store/game'
 import { playerService } from '@/services/player.service'
 
-import Divider from '@/components/ui/divider'
+import Divider from '@/components/divider'
 
 export default function Home() {
 	const navigate = useNavigate()

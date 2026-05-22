@@ -6,7 +6,7 @@ import { gameStore } from '@/store/game'
 
 import GameTarget from '@/components/game/game-target'
 import GameCurrent from '@/components/game/game-current'
-import Divider from '@/components/ui/divider'
+import Divider from '@/components/divider'
 import GameScore from '@/components/game/game-score'
 
 export default function Game() {
