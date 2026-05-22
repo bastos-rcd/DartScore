@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import type { Player } from '@/models/player'
 import { gameStore } from '@/store/game'
-import { getPlayers } from '@/services/player.service'
+import { playerService } from '@/services/player.service'
 
 import Divider from '@/components/ui/divider'
 
@@ -21,7 +21,7 @@ export default function Home() {
 			return
 		}
 
-		getPlayers().then((data) => setDbPlayers(data))
+		playerService.getPlayers().then((data) => setDbPlayers(data))
 	}, [status])
 
 	const handleCheck = (player: Player) => {
