@@ -2,12 +2,17 @@
 @import 'tailwindcss';
 
 :root {
-	--background: #000000;
-	--border: #000000;
-	--text: #ffffff;
+	--black: #09090b;
+	--white: #f4f4f5;
 
-	--primary: #000000;
-	--secondary: #000000;
+	--border: #a8a29e;
+	--background: #ddd8d2;
+
+	--red: #f87171;
+	--yellow: #fdba74;
+	--green: #6ee7b7;
+	--blue: #7dd3fc;
+	--violet: #c4b5fd;
 }
 
 html,
@@ -17,30 +22,12 @@ body {
 
 	background-color: var(--background);
 	font-family: 'Cause', sans-serif;
-	color: var(--text);
+	color: var(--black);
 
 	font-size: 16px;
 }
 
 h1 {
-	font-size: 30px;
-}
-
-h2 {
 	font-size: 20px;
-}
-
-@media (max-width: 640px) {
-	html,
-	body {
-		font-size: 12px;
-	}
-
-	h1 {
-		font-size: 20px;
-	}
-
-	h2 {
-		font-size: 16px;
-	}
+	font-weight: bold;
 }
