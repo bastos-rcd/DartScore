@@ -13,7 +13,7 @@ export default function Menu() {
 		<nav className="flex flex-row justify-evenly">
 			<Item href="/" icon="fa-solid fa-bullseye fa-xl" />
 			<Item href="/players" icon="fa-solid fa-people-group fa-xl" />
-			<Item href="/statistics" icon="fa-solid fa-chart-simple fa-xl" />
+			<Item href="/rank" icon="fa-solid fa-chart-simple fa-xl" />
 			<Item href="/history" icon="fa-solid fa-clock-rotate-left fa-xl" />
 		</nav>
 	)
