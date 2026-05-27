@@ -1,17 +1,9 @@
-import { db } from '@/services/db'
+import type { IPlayerService } from '@/services/interface'
 
-import type { Player } from '@/models/player'
+import { playerLocalService } from '@/services/local/player.local'
+import { playerRemoteService } from '@/services/remote/player.remote'
 
-export const playerService = {
-	async getPlayers(): Promise<Player[]> {
-		return await db.users.toArray()
-	},
-
-	async addPlayer(player: Player): Promise<string> {
-		return await db.users.add(player)
-	},
-
-	async removePlayer(player: Player): Promise<void> {
-		await db.users.delete(player.id)
-	},
-}
+const isPocketbase = import.meta.env.VITE_DB === 'pocketbase'
+export const playerService: IPlayerService = isPocketbase
+	? playerRemoteService
+	: playerLocalService

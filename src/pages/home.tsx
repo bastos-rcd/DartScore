@@ -1,16 +1,15 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useLiveQuery } from 'dexie-react-hooks'
 
 import type { Player } from '@/models/player'
 import { gameStore } from '@/store/game'
-import { playerService } from '@/services/player.service'
+import { usePlayers } from '@/hooks/usePlayers'
 
 import Divider from '@/components/divider'
 
 export default function Home() {
 	const navigate = useNavigate()
-	const dbPlayers = useLiveQuery(() => playerService.getPlayers())
+	const { players: dbPlayers, loading } = usePlayers()
 
 	const { status, setStatus, players, setPlayers, addPlayer, removePlayer } =
 		gameStore()
@@ -20,11 +19,17 @@ export default function Home() {
 			navigate('/game')
 			return
 		}
-	}, [status])
+	}, [status, navigate])
 
 	const handleCheck = (player: Player) => {
-		if (players.includes(player)) removePlayer([player])
-		else addPlayer([player])
+		const isSelected = players.some((p) => p.id === player.id)
+
+		if (isSelected) {
+			const playerToRemove = players.find((p) => p.id === player.id)
+			if (playerToRemove) removePlayer([playerToRemove])
+		} else {
+			addPlayer([player])
+		}
 	}
 
 	const handleStart = () => {
@@ -32,6 +37,10 @@ export default function Home() {
 
 		setPlayers(players.toSorted(() => Math.random() - 0.5))
 		setStatus(true)
+	}
+
+	if (loading) {
+		return <div className="text-center font-bold">Chargement en cours...</div>
 	}
 
 	return (

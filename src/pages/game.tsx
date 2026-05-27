@@ -58,9 +58,9 @@ export default function Game() {
 		}
 
 		setCurrent(next)
-	}, [status, darts])
+	}, [status, darts, classment, players, isSaving, saveGame, navigate])
 
-	if (!status) return <></>
+	if (!status) return null
 
 	if (isSaving) {
 		return (

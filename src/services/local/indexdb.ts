@@ -4,14 +4,14 @@ import type { Player } from '@/models/player'
 import type { Game } from '@/models/game'
 
 export class DartScoreDB extends Dexie {
-	users!: Table<Player, string>
+	players!: Table<Player, string>
 	games!: Table<Game, string>
 
 	constructor() {
 		super('dartscoredb')
 
 		this.version(1).stores({
-			users: '++id',
+			players: '++id',
 			games: '++id',
 		})
 	}

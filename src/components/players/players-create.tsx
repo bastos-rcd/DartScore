@@ -1,5 +1,6 @@
-import { playerService } from '@/services/player.service'
 import { useState } from 'react'
+
+import { playerService } from '@/services/player.service'
 
 export default function PlayersCreate() {
 	const [name, setName] = useState<string>('')
@@ -13,7 +14,7 @@ export default function PlayersCreate() {
 		}
 
 		playerService
-			.addPlayer({ id: crypto.randomUUID(), name: name.trim() })
+			.addPlayer({ id: '', name: name.trim() })
 			.then(() => {
 				setName('')
 			})

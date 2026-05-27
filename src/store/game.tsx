@@ -98,7 +98,7 @@ export const gameStore = create<State>((set, get) => ({
 			})
 
 			const game: Game = {
-				id: crypto.randomUUID(),
+				id: '',
 				classment: result,
 				date: new Date().toLocaleDateString('fr-FR'),
 			}
