@@ -23,9 +23,12 @@ export default function GameTarget(props: { player: Player }) {
 	} = gameStore()
 
 	const [multiplier, setMultiplier] = useState<1 | 2 | 3>(1)
+	const [penality, setPenality] = useState<boolean>(false)
 
 	const handleClick = (value: number, multiplier: number) => {
-		let totalScore = value * multiplier
+		const rawScore = value * multiplier
+		const totalScore = penality ? Math.ceil(rawScore * 0.8) : rawScore
+
 		let label =
 			multiplier === 2
 				? `D${value}`
@@ -123,6 +126,7 @@ export default function GameTarget(props: { player: Player }) {
 					onClick={() => {
 						handleClick(num, multiplier)
 						setMultiplier(1)
+						setPenality(false)
 					}}
 					disabled={num * multiplier > 60}
 				>
@@ -145,9 +149,19 @@ export default function GameTarget(props: { player: Player }) {
 			</button>
 
 			<button
+				className={`col-span-2 rounded-xl border border-(--border) bg-(--yellow) font-bold ${penality && 'opacity-50'}`}
+				onClick={() => setPenality(!penality)}
+			>
+				<i className="fa-solid fa-triangle-exclamation"></i>
+			</button>
+
+			<div className="col-span-5"></div>
+
+			<button
 				className="aspect-square rounded-xl border border-(--border) bg-(--red) font-bold disabled:opacity-50"
 				onClick={() => {
 					setMultiplier(1)
+					setPenality(false)
 					handleCancel()
 				}}
 			>
