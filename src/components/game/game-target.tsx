@@ -1,21 +1,35 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import type { Player } from '@/models/player'
 import { gameStore } from '@/store/game'
+import { speak } from '@/utils/speech'
 
-const SECTORS = [
-	20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5,
+const NUMBERS = [
+	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 0,
 ]
 
-const getCoordinates = (percent: number) => {
-	const x = Math.cos(2 * Math.PI * percent)
-	const y = Math.sin(2 * Math.PI * percent)
-	return [x, y]
-}
-
 export default function GameTarget(props: { player: Player }) {
-	const { darts, addDart, classment, setClassment } = gameStore()
+	const navigate = useNavigate()
+
+	const {
+		players,
+		darts,
+		addDart,
+		removeDart,
+		classment,
+		addClassment,
+		removeClassment,
+		saveGame,
+	} = gameStore()
+
+	const [multiplier, setMultiplier] = useState<1 | 2 | 3>(1)
+	const [penality, setPenality] = useState<boolean>(false)
 
 	const handleClick = (value: number, multiplier: number) => {
-		let totalScore = value * multiplier
+		const rawScore = value * multiplier
+		const totalScore = penality ? Math.ceil(rawScore * 0.8) : rawScore
+
 		let label =
 			multiplier === 2
 				? `D${value}`
@@ -57,13 +71,25 @@ export default function GameTarget(props: { player: Player }) {
 					playerId: props.player.id,
 				})
 			}
+
+			speak('bust', props.player)
 			return
 		}
 
 		if (301 - (scoreAtStartOfTurn + scoreScoredThisTurn + totalScore) === 0) {
 			if (!classment.includes(props.player)) {
-				setClassment(props.player)
+				addClassment(props.player)
 			}
+
+			addDart({
+				id: crypto.randomUUID(),
+				label,
+				score: totalScore,
+				playerId: props.player.id,
+			})
+
+			speak('finish', props.player, totalScore)
+			return
 		}
 
 		addDart({
@@ -72,105 +98,100 @@ export default function GameTarget(props: { player: Player }) {
 			score: totalScore,
 			playerId: props.player.id,
 		})
+
+		if (allPlayerDarts.length % 3 === 2) {
+			const turnScore = scoreScoredThisTurn + totalScore
+			speak('turn', props.player, turnScore)
+		}
+	}
+
+	const handleCancel = () => {
+		if (darts.length === 0) return
+
+		removeDart(darts[darts.length - 1])
+
+		const lastDart = darts[darts.length - 1]
+
+		const playerDarts = darts.filter((d) => d.playerId === lastDart.playerId)
+		const scoreAfterRemoval = playerDarts
+			.slice(0, playerDarts.length - 1)
+			.reduce((acc, d) => acc + d.score, 0)
+
+		if (
+			classment.some((p) => p.id === lastDart.playerId) &&
+			scoreAfterRemoval < 301
+		) {
+			removeClassment(players.find((p) => p.id === lastDart.playerId)!)
+		}
+
+		removeDart(lastDart)
+	}
+
+	const handleSave = () => {
+		if (confirm('Voulez-vous arrêter et sauvegarder cette partie ?')) {
+			saveGame().then(() => {
+				navigate('/rank')
+			})
+		}
 	}
 
 	return (
-		<svg viewBox="-250 -250 500 500">
-			<circle
-				cx="0"
-				cy="0"
-				r="240"
-				fill="var(--black)"
-				onClick={() => handleClick(0, 1)}
-			/>
+		<div className="grid grid-cols-7 gap-1">
+			{NUMBERS.map((num) => (
+				<button
+					key={num}
+					className="aspect-square rounded-xl border border-(--border) bg-(--white) font-bold disabled:opacity-50"
+					onClick={() => {
+						handleClick(num, multiplier)
+						setMultiplier(1)
+						setPenality(false)
+					}}
+					disabled={num * multiplier > 60}
+				>
+					{num}
+				</button>
+			))}
 
-			{SECTORS.map((number, index) => {
-				const startPercent = (index - 0.5) / 20 - 0.25
-				const endPercent = (index + 0.5) / 20 - 0.25
+			<button
+				className={`col-span-2 rounded-xl border border-(--border) bg-(--blue) font-bold ${multiplier === 2 && 'opacity-50'}`}
+				onClick={() => setMultiplier(multiplier === 2 ? 1 : 2)}
+			>
+				DOUBLE
+			</button>
 
-				const [startX, startY] = getCoordinates(startPercent)
-				const [endX, endY] = getCoordinates(endPercent)
+			<button
+				className={`col-span-2 rounded-xl border border-(--border) bg-(--violet) font-bold ${multiplier === 3 && 'opacity-50'}`}
+				onClick={() => setMultiplier(multiplier === 3 ? 1 : 3)}
+			>
+				TRIPLE
+			</button>
 
-				const isEven = index % 2 === 0
-				const sectorColor = isEven ? 'var(--black)' : 'var(--background)'
-				const ringColor = isEven ? 'var(--red)' : 'var(--green)'
+			<button
+				className={`col-span-2 rounded-xl border border-(--border) bg-(--yellow) font-bold ${penality && 'opacity-50'}`}
+				onClick={() => setPenality(!penality)}
+			>
+				<i className="fa-solid fa-triangle-exclamation"></i>
+			</button>
 
-				const rDouble = 200
-				const rTriple = 130
+			<div className="col-span-5"></div>
 
-				return (
-					<g key={number} className="group">
-						<path
-							d={`M ${startX * rDouble} ${startY * rDouble} A ${rDouble} ${rDouble} 0 0 1 ${endX * rDouble} ${endY * rDouble} L ${endX * (rDouble - 15)} ${endY * (rDouble - 15)} A ${rDouble - 15} ${rDouble - 15} 0 0 0 ${startX * (rDouble - 15)} ${startY * (rDouble - 15)} Z`}
-							fill={ringColor}
-							onClick={(e) => {
-								e.stopPropagation()
-								handleClick(number, 2)
-							}}
-						/>
-
-						<path
-							d={`M ${startX * (rDouble - 15)} ${startY * (rDouble - 15)} A ${rDouble - 15} ${rDouble - 15} 0 0 1 ${endX * (rDouble - 15)} ${endY * (rDouble - 15)} L ${endX * rTriple} ${endY * rTriple} A ${rTriple} ${rTriple} 0 0 0 ${startX * rTriple} ${startY * rTriple} Z`}
-							fill={sectorColor}
-							onClick={(e) => {
-								e.stopPropagation()
-								handleClick(number, 1)
-							}}
-						/>
-
-						<path
-							d={`M ${startX * rTriple} ${startY * rTriple} A ${rTriple} ${rTriple} 0 0 1 ${endX * rTriple} ${endY * rTriple} L ${endX * (rTriple - 15)} ${endY * (rTriple - 15)} A ${rTriple - 15} ${rTriple - 15} 0 0 0 ${startX * (rTriple - 15)} ${startY * (rTriple - 15)} Z`}
-							fill={ringColor}
-							onClick={(e) => {
-								e.stopPropagation()
-								handleClick(number, 3)
-							}}
-						/>
-
-						<path
-							d={`M ${startX * (rTriple - 15)} ${startY * (rTriple - 15)} A ${rTriple - 15} ${rTriple - 15} 0 0 1 ${endX * (rTriple - 15)} ${endY * (rTriple - 15)} L ${endX * 30} ${endY * 30} A 30 30 0 0 0 ${startX * 30} ${startY * 30} Z`}
-							fill={sectorColor}
-							onClick={(e) => {
-								e.stopPropagation()
-								handleClick(number, 1)
-							}}
-						/>
-
-						<text
-							x={startX * 220 + (endX - startX) * 110}
-							y={startY * 220 + (endY - startY) * 110}
-							fill="var(--white)"
-							textAnchor="middle"
-							dominantBaseline="central"
-							className="font-bold"
-						>
-							{number}
-						</text>
-					</g>
-				)
-			})}
-
-			<circle
-				cx="0"
-				cy="0"
-				r="30"
-				fill="var(--green)"
-				onClick={(e) => {
-					e.stopPropagation()
-					handleClick(25, 1)
+			<button
+				className="aspect-square rounded-xl border border-(--border) bg-(--red) font-bold disabled:opacity-50"
+				onClick={() => {
+					setMultiplier(1)
+					setPenality(false)
+					handleCancel()
 				}}
-			/>
+			>
+				<i className="fa-solid fa-arrow-rotate-left"></i>
+			</button>
 
-			<circle
-				cx="0"
-				cy="0"
-				r="12"
-				fill="var(--red)"
-				onClick={(e) => {
-					e.stopPropagation()
-					handleClick(25, 2)
-				}}
-			/>
-		</svg>
+			<button
+				className="aspect-square rounded-xl border border-(--border) bg-(--green) font-bold disabled:opacity-50"
+				onClick={handleSave}
+			>
+				<i className="fa-solid fa-floppy-disk fa-lg"></i>
+			</button>
+		</div>
 	)
 }

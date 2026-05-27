@@ -75,13 +75,15 @@ export default function Game() {
 
 	return (
 		<>
-			<GameTarget player={current ?? players[0]} />
+			<GameScore />
+
+			<Divider />
 
 			<GameCurrent player={current ?? players[0]} />
 
 			<Divider />
 
-			<GameScore />
+			<GameTarget player={current ?? players[0]} />
 		</>
 	)
 }

@@ -9,6 +9,9 @@ import RankItem from './rank-item'
 function useClassement() {
 	return useLiveQuery(async () => {
 		const games = await gameService.getGames()
+
+		if (games.length === 0) return []
+
 		const players = await playerService.getPlayers()
 
 		const classments = new Map<string, Classment>()
