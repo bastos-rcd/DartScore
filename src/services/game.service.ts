@@ -1,13 +1,9 @@
-import { db } from '@/services/db'
+import type { IGameService } from '@/services/interface'
 
-import type { Game } from '@/models/game'
+import { gameLocalService } from '@/services/local/game.local'
+import { gameRemoteService } from '@/services/remote/game.remote'
 
-export const gameService = {
-	async getGames(): Promise<Game[]> {
-		return await db.games.toArray()
-	},
-
-	async addGame(game: Game): Promise<string> {
-		return await db.games.add(game)
-	},
-}
+const isPocketbase = import.meta.env.VITE_DB === 'pocketbase'
+export const gameService: IGameService = isPocketbase
+	? gameRemoteService
+	: gameLocalService

@@ -99,7 +99,7 @@ export default function GameTarget(props: { player: Player }) {
 			playerId: props.player.id,
 		})
 
-		if (allPlayerDarts.length % 3 === 2) {
+		if (currentTurnCount === 2) {
 			const turnScore = scoreScoredThisTurn + totalScore
 			speak('turn', props.player, turnScore)
 		}
@@ -108,30 +108,23 @@ export default function GameTarget(props: { player: Player }) {
 	const handleCancel = () => {
 		if (darts.length === 0) return
 
-		removeDart(darts[darts.length - 1])
-
 		const lastDart = darts[darts.length - 1]
 
 		const playerDarts = darts.filter((d) => d.playerId === lastDart.playerId)
-		const scoreAfterRemoval = playerDarts
-			.slice(0, playerDarts.length - 1)
-			.reduce((acc, d) => acc + d.score, 0)
+		const scoreBeforeCancel = playerDarts.reduce((acc, d) => acc + d.score, 0)
 
-		if (
-			classment.some((p) => p.id === lastDart.playerId) &&
-			scoreAfterRemoval < 301
-		) {
-			removeClassment(players.find((p) => p.id === lastDart.playerId)!)
+		if (scoreBeforeCancel === 301) {
+			const playerInClassment = players.find((p) => p.id === lastDart.playerId)
+			if (playerInClassment) removeClassment(playerInClassment)
 		}
 
 		removeDart(lastDart)
 	}
 
-	const handleSave = () => {
+	const handleSave = async () => {
 		if (confirm('Voulez-vous arrêter et sauvegarder cette partie ?')) {
-			saveGame().then(() => {
-				navigate('/rank')
-			})
+			await saveGame()
+			navigate('/rank')
 		}
 	}
 
@@ -176,7 +169,7 @@ export default function GameTarget(props: { player: Player }) {
 			<div className="col-span-5"></div>
 
 			<button
-				className="aspect-square rounded-xl border border-(--border) bg-(--red) font-bold disabled:opacity-50"
+				className="aspect-square rounded-xl border border-(--border) bg-(--red) font-bold"
 				onClick={() => {
 					setMultiplier(1)
 					setPenality(false)
@@ -187,7 +180,7 @@ export default function GameTarget(props: { player: Player }) {
 			</button>
 
 			<button
-				className="aspect-square rounded-xl border border-(--border) bg-(--green) font-bold disabled:opacity-50"
+				className="aspect-square rounded-xl border border-(--border) bg-(--green) font-bold"
 				onClick={handleSave}
 			>
 				<i className="fa-solid fa-floppy-disk fa-lg"></i>
