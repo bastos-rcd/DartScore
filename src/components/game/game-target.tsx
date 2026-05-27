@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import type { Player } from '@/models/player'
 import { gameStore } from '@/store/game'
+import { speak } from '@/utils/speech'
 
 const NUMBERS = [
 	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 0,
@@ -70,6 +71,8 @@ export default function GameTarget(props: { player: Player }) {
 					playerId: props.player.id,
 				})
 			}
+
+			speak('bust', props.player)
 			return
 		}
 
@@ -77,6 +80,16 @@ export default function GameTarget(props: { player: Player }) {
 			if (!classment.includes(props.player)) {
 				addClassment(props.player)
 			}
+
+			addDart({
+				id: crypto.randomUUID(),
+				label,
+				score: totalScore,
+				playerId: props.player.id,
+			})
+
+			speak('finish', props.player, totalScore)
+			return
 		}
 
 		addDart({
@@ -85,6 +98,11 @@ export default function GameTarget(props: { player: Player }) {
 			score: totalScore,
 			playerId: props.player.id,
 		})
+
+		if (allPlayerDarts.length % 3 === 2) {
+			const turnScore = scoreScoredThisTurn + totalScore
+			speak('turn', props.player, turnScore)
+		}
 	}
 
 	const handleCancel = () => {
