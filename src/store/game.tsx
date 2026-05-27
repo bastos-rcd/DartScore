@@ -56,21 +56,44 @@ export const gameStore = create<State>((set, get) => ({
 
 	isSaving: false,
 	saveGame: async () => {
-		const { players, classment, isSaving } = get()
+		const { players, classment, darts, isSaving } = get()
 
 		if (isSaving) return
 
 		set({ isSaving: true })
 
 		try {
+			const counts = classment.map((player) => ({
+				player,
+				dartCount: darts.filter((d) => d.playerId === player.id).length,
+			}))
+
+			const sorted = [...counts].sort((a, b) => {
+				if (a.dartCount !== b.dartCount) return a.dartCount - b.dartCount
+				return (
+					classment.findIndex((p) => p.id === a.player.id) -
+					classment.findIndex((p) => p.id === b.player.id)
+				)
+			})
+
 			const result: { player: Player; score: number }[] = []
 
 			players.forEach((player) => {
-				const index = classment.findIndex((c) => c.id === player.id)
+				const index = sorted.findIndex((c) => c.player.id === player.id)
+
+				if (index === -1) {
+					result.push({ player, score: 0 })
+					return
+				}
+
+				const sameCount = sorted[index].dartCount
+				const firstSameCount = sorted.findIndex(
+					(c) => c.dartCount === sameCount,
+				)
 
 				result.push({
-					player: player,
-					score: index > -1 ? players.length - index : 0,
+					player,
+					score: players.length - firstSameCount,
 				})
 			})
 
