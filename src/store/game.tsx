@@ -19,7 +19,8 @@ interface State {
 	removeDart: (dart: Dart) => void
 
 	classment: Player[]
-	setClassment: (player: Player) => void
+	addClassment: (player: Player) => void
+	removeClassment: (player: Player) => void
 
 	isSaving: boolean
 	saveGame: () => Promise<void>
@@ -44,9 +45,13 @@ export const gameStore = create<State>((set, get) => ({
 		set((state) => ({ darts: state.darts.filter((d) => d !== dart) })),
 
 	classment: [],
-	setClassment: (player: Player) =>
+	addClassment: (player: Player) =>
 		set((state) => ({
 			classment: [...state.classment, player],
+		})),
+	removeClassment: (player: Player) =>
+		set((state) => ({
+			classment: state.classment.filter((p) => p.id !== player.id),
 		})),
 
 	isSaving: false,

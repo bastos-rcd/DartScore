@@ -11,8 +11,16 @@ const NUMBERS = [
 export default function GameTarget(props: { player: Player }) {
 	const navigate = useNavigate()
 
-	const { darts, addDart, removeDart, classment, setClassment, saveGame } =
-		gameStore()
+	const {
+		players,
+		darts,
+		addDart,
+		removeDart,
+		classment,
+		addClassment,
+		removeClassment,
+		saveGame,
+	} = gameStore()
 
 	const [multiplier, setMultiplier] = useState<1 | 2 | 3>(1)
 
@@ -64,7 +72,7 @@ export default function GameTarget(props: { player: Player }) {
 
 		if (301 - (scoreAtStartOfTurn + scoreScoredThisTurn + totalScore) === 0) {
 			if (!classment.includes(props.player)) {
-				setClassment(props.player)
+				addClassment(props.player)
 			}
 		}
 
@@ -80,6 +88,22 @@ export default function GameTarget(props: { player: Player }) {
 		if (darts.length === 0) return
 
 		removeDart(darts[darts.length - 1])
+
+		const lastDart = darts[darts.length - 1]
+
+		const playerDarts = darts.filter((d) => d.playerId === lastDart.playerId)
+		const scoreAfterRemoval = playerDarts
+			.slice(0, playerDarts.length - 1)
+			.reduce((acc, d) => acc + d.score, 0)
+
+		if (
+			classment.some((p) => p.id === lastDart.playerId) &&
+			scoreAfterRemoval < 301
+		) {
+			removeClassment(players.find((p) => p.id === lastDart.playerId)!)
+		}
+
+		removeDart(lastDart)
 	}
 
 	const handleSave = () => {
