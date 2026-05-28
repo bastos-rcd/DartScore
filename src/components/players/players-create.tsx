@@ -14,7 +14,7 @@ export default function PlayersCreate() {
 		}
 
 		playerService
-			.addPlayer({ id: '', name: name.trim() })
+			.addPlayer({ id: crypto.randomUUID(), name: name.trim() })
 			.then(() => {
 				setName('')
 			})
