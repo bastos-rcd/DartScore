@@ -11,7 +11,10 @@ export const gameRemoteService: IGameService = {
 	},
 
 	async addGame(game): Promise<string> {
-		const record = await db.collection('games').create(game)
+		const record = await db.collection('games').create({
+			classment: game.classment,
+			date: game.date,
+		})
 		return record.id
 	},
 
