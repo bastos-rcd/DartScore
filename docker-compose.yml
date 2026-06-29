@@ -1,7 +1,6 @@
 services:
   pocketbase:
     image: ghcr.io/muchobien/pocketbase:latest
-    container_name: pocketbase
     ports:
       - '8090:8090'
     environment:
@@ -19,7 +18,6 @@ services:
       args:
         - VITE_DB=pocketbase
         - VITE_PB_URL=http://localhost:8090
-    container_name: dartscore
     ports:
       - '80:80'
     depends_on:
