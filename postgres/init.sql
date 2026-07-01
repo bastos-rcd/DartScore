@@ -10,4 +10,11 @@ CREATE TABLE "user"
 
 -- password : hashedpwd
 INSERT INTO "user" (name, email, password, role)
-VALUES ('ADMIN', 'admin@dartscore.fr', '$2b$10$GwKnopMR9OUARx1AzEhfFuwWw629JxMhpG2nyMUqYIW9zpERHO1Tq', 'ADMIN'); 
+VALUES ('ADMIN', 'admin@dartscore.fr', '$2b$10$GwKnopMR9OUARx1AzEhfFuwWw629JxMhpG2nyMUqYIW9zpERHO1Tq', 'ADMIN');
+
+CREATE TABLE "player"
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    user_id INTEGER REFERENCES "user"(id) ON DELETE CASCADE
+);
