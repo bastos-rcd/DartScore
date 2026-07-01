@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: dartscoredb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      TZ: Europe/Paris
+    volumes:
+      - darts_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+volumes:
+  darts_data:
