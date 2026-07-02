@@ -24,10 +24,5 @@ body {
 	font-family: 'Cause', sans-serif;
 	color: var(--black);
 
-	font-size: 16px;
-}
-
-h1 {
-	font-size: 20px;
-	font-weight: bold;
+	font-size: 14px;
 }
