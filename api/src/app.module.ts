@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { APP_GUARD } from '@nestjs/core'
+
+import { JwtGuard } from '@/auth/jwt.guard'
+import { RolesGuard } from '@/auth/roles.guard'
 
 import { User } from '@/users/user.entity'
-import { UserService } from '@/users/user.service'
-import { UserController } from '@/users/user.controller'
+import { UserModule } from './users/user.module'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
 	imports: [
@@ -21,9 +25,18 @@ import { UserController } from '@/users/user.controller'
 			entities: [User],
 			synchronize: false,
 		}),
-		TypeOrmModule.forFeature([User]),
+		AuthModule,
+		UserModule,
 	],
-	controllers: [UserController],
-	providers: [UserService],
+	providers: [
+		{
+			provide: APP_GUARD,
+			useClass: JwtGuard,
+		},
+		{
+			provide: APP_GUARD,
+			useClass: RolesGuard,
+		},
+	],
 })
 export class AppModule {}

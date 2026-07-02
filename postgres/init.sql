@@ -15,6 +15,9 @@ VALUES ('ADMIN', 'admin@dartscore.fr', '$2b$10$GwKnopMR9OUARx1AzEhfFuwWw629JxMhp
 CREATE TABLE "player"
 (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL UNIQUE,
     user_id INTEGER REFERENCES "user"(id) ON DELETE CASCADE
 );
+
+INSERT INTO "player" (name, user_id)
+VALUES ('Bastien', 1);

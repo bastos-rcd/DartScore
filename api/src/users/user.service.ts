@@ -27,23 +27,26 @@ export class UserService {
 			where: { id, role: 'USER' },
 		})
 
-		if (!user) {
-			throw new NotFoundException('Utilisateur introuvable !')
-		}
+		if (!user) throw new NotFoundException('Utilisateur introuvable !')
 
 		return user
 	}
 
+	async findByEmail(email: string) {
+		return this.repo
+			.createQueryBuilder('user')
+			.addSelect('user.password')
+			.where('user.email = :email', { email })
+			.getOne()
+	}
+
 	async create(dto: Partial<User>): Promise<User> {
-		if (!dto.name || !dto.email || !dto.password) {
+		if (!dto.name || !dto.email || !dto.password)
 			throw new BadRequestException('Données requises manquantes !')
-		}
 
 		const user = await this.repo.findOne({ where: { email: dto.email } })
 
-		if (user) {
-			throw new ConflictException('Email déjà existant !')
-		}
+		if (user) throw new ConflictException('Email déjà existant !')
 
 		const hashed = await bcrypt.hash(dto.password, 10)
 
@@ -60,9 +63,7 @@ export class UserService {
 			where: { id, role: 'USER' },
 		})
 
-		if (!user) {
-			throw new NotFoundException('Utilisateur introuvable !')
-		}
+		if (!user) throw new NotFoundException('Utilisateur introuvable !')
 
 		if (dto.password) {
 			dto.password = await bcrypt.hash(dto.password, 10)
@@ -76,9 +77,7 @@ export class UserService {
 			where: { id, role: 'USER' },
 		})
 
-		if (!user) {
-			throw new NotFoundException('Utilisateur introuvable !')
-		}
+		if (!user) throw new NotFoundException('Utilisateur introuvable !')
 
 		return await this.repo.remove(user)
 	}
