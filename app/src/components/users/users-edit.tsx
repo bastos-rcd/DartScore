@@ -130,25 +130,5 @@ export default function UsersEdit(props: {
 				{props.user.id != '0' ? 'Modifier' : 'Créer'}
 			</button>
 		</form>
-		// <form
-		// 	onSubmit={handleSubmit}
-		// 	className="flex flex-row items-center justify-center gap-4"
-		// >
-		// 	<input
-		// 		type="text"
-		// 		id="name"
-		// 		value={props.user.name}
-		// 		onChange={(e) => props.setUser({ ...props.user, name: e.target.value })}
-		// 		placeholder="Nom du joueur"
-		// 		className="rounded-xl border border-(--border) bg-(--white) p-2"
-		// 	/>
-
-		// 	<button
-		// 		type="submit"
-		// 		className="aspect-square h-full rounded-xl border border-(--border) bg-(--blue)"
-		// 	>
-		// 		<i className="fa-solid fa-circle-plus fa-lg"></i>
-		// 	</button>
-		// </form>
 	)
 }

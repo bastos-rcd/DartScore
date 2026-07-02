@@ -19,9 +19,6 @@ CREATE TABLE "player"
     user_id INTEGER REFERENCES "user"(id) ON DELETE CASCADE
 );
 
-INSERT INTO "player" (name, user_id)
-VALUES ('Bastien', 1);
-
 CREATE TABLE "game"
 (
     id SERIAL PRIMARY KEY,

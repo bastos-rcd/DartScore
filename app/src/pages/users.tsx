@@ -1,8 +1,10 @@
+import { useState } from 'react'
+
+import type { User } from '@/models/user'
+
 import UsersEdit from '@/components/users/users-edit'
 import Divider from '@/components/divider'
 import UsersList from '@/components/users/users-list'
-import { useState } from 'react'
-import type { User } from '@/models/user'
 
 export default function Users() {
 	const [refreshKey, setRefreshKey] = useState(0)

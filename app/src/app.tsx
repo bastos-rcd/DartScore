@@ -14,6 +14,7 @@ import Login from '@/pages/login'
 import Home from '@/pages/home'
 
 import Users from '@/pages/users'
+import Players from './pages/players'
 
 export default function App() {
 	const { isAuthenticated } = authStore()
@@ -47,6 +48,7 @@ export default function App() {
 							}
 						>
 							<Route path="/" element={<Home />} />
+							<Route path="/players" element={<Players />} />
 						</Route>
 
 						<Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
