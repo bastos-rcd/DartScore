@@ -22,7 +22,7 @@ export default function Menu() {
 			<Item href="/rank" icon="fa-solid fa-ranking-star fa-xl" />
 
 			{isAuthenticated && hasRole(ROLES.ADMIN) && (
-				<Item href="/users" icon="fa-solid fa-users fa-xl" />
+				<Item href="/users" icon="fa-solid fa-user-gear fa-xl" />
 			)}
 
 			{isAuthenticated && (
