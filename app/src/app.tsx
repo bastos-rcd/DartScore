@@ -2,16 +2,18 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import { ROLES } from '@/models/user'
 
+import { authStore } from '@/store/auth'
 import useAuthInit from '@/hooks/useAuthInit'
 
 import Menu from '@/components/menu'
 import Divider from '@/components/divider'
 import ProtectedRoute from '@/components/protected-route'
 
-import { authStore } from '@/store/auth'
-
 import Login from '@/pages/login'
+
 import Home from '@/pages/home'
+
+import Users from '@/pages/users'
 
 export default function App() {
 	const { isAuthenticated } = authStore()
@@ -47,9 +49,9 @@ export default function App() {
 							<Route path="/" element={<Home />} />
 						</Route>
 
-						<Route
-							element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}
-						></Route>
+						<Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
+							<Route path="/users" element={<Users />} />
+						</Route>
 					</Routes>
 				</main>
 			</div>

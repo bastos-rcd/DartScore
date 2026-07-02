@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 
+import { ROLES } from '@/models/user'
+
 import { authStore } from '@/store/auth'
 
 const Item = (props: { href: string; icon: string }) => {
@@ -11,13 +13,17 @@ const Item = (props: { href: string; icon: string }) => {
 }
 
 export default function Menu() {
-	const { isAuthenticated, logout } = authStore()
+	const { isAuthenticated, logout, hasRole } = authStore()
 
 	return (
 		<nav className="flex flex-row justify-evenly">
 			<Item href="/" icon="fa-solid fa-bullseye fa-xl" />
 			<Item href="/players" icon="fa-solid fa-people-group fa-xl" />
 			<Item href="/rank" icon="fa-solid fa-ranking-star fa-xl" />
+
+			{isAuthenticated && hasRole(ROLES.ADMIN) && (
+				<Item href="/users" icon="fa-solid fa-users fa-xl" />
+			)}
 
 			{isAuthenticated && (
 				<button
