@@ -9,6 +9,8 @@ import { RolesGuard } from '@/auth/roles.guard'
 import { User } from '@/users/user.entity'
 import { UserModule } from './users/user.module'
 import { AuthModule } from './auth/auth.module'
+import { PlayerModule } from './players/player.module'
+import { Player } from './players/player.entity'
 
 @Module({
 	imports: [
@@ -22,11 +24,12 @@ import { AuthModule } from './auth/auth.module'
 			username: process.env.DB_USER!,
 			password: process.env.DB_PASSWORD!,
 			database: process.env.DB_NAME!,
-			entities: [User],
+			entities: [User, Player],
 			synchronize: false,
 		}),
 		AuthModule,
 		UserModule,
+		PlayerModule,
 	],
 	providers: [
 		{

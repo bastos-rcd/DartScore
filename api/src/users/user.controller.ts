@@ -1,8 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 
+import { Roles } from '@/auth/roles.decorator'
+
 import { User } from '@/users/user.entity'
 import { UserService } from '@/users/user.service'
-import { Roles } from '@/auth/roles.decorator'
 
 @Controller('users')
 export class UserController {
