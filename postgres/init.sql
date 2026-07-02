@@ -21,3 +21,12 @@ CREATE TABLE "player"
 
 INSERT INTO "player" (name, user_id)
 VALUES ('Bastien', 1);
+
+CREATE TABLE "game"
+(
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(10) DEFAULT '301' CHECK (type IN ('301','501','killer')),
+    date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    rank JSONB NOT NULL DEFAULT '[]',
+    user_id INTEGER REFERENCES "user"(id) ON DELETE CASCADE
+);

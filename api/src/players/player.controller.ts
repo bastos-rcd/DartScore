@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 
+import { CurrentUser } from '@/auth/current.decorator'
+
 import { User } from '@/users/user.entity'
 
 import { Player } from '@/players/player.entity'
 import { PlayerService } from '@/players/player.service'
-import { CurrentUser } from '@/auth/current.decorator'
 
 @Controller('players')
 export class PlayerController {
