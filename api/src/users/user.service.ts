@@ -18,6 +18,14 @@ export class UserService {
 		private readonly repo: Repository<User>,
 	) {}
 
+	async find(id: number): Promise<User> {
+		const user = await this.repo.findOne({ where: { id } })
+
+		if (!user) throw new NotFoundException('Utilisateur introuvable !')
+
+		return user
+	}
+
 	async findAll(): Promise<User[]> {
 		return this.repo.find({ where: { role: 'USER' } })
 	}
