@@ -10,12 +10,8 @@ export default function UsersItem(props: {
 	const handleToggle = () => {
 		userService
 			.update({ id: props.user.id, active: !props.user.active })
-			.then(() => {
-				props.refresh()
-			})
-			.catch((error) => {
-				alert(error.message)
-			})
+			.then(() => props.refresh())
+			.catch((error) => alert(error.message))
 	}
 
 	const handleDelete = () => {

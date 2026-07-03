@@ -33,12 +33,9 @@ export default function UsersEdit(props: {
 					})
 					props.refresh()
 					setError('')
-					setIsLoading(false)
 				})
-				.catch((error) => {
-					setIsLoading(false)
-					setError(error.message)
-				})
+				.catch((error) => setError(error.message))
+				.finally(() => setIsLoading(false))
 		} else {
 			userService
 				.update({
@@ -58,12 +55,9 @@ export default function UsersEdit(props: {
 					})
 					props.refresh()
 					setError('')
-					setIsLoading(false)
 				})
-				.catch((error) => {
-					setIsLoading(false)
-					setError(error.message)
-				})
+				.catch((error) => setError(error.message))
+				.finally(() => setIsLoading(false))
 		}
 	}
 

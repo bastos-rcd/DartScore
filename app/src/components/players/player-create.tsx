@@ -25,12 +25,9 @@ export default function PlayersCreate(props: {
 						name: '',
 					})
 					props.refresh()
-					setIsLoading(false)
 				})
-				.catch((error) => {
-					setIsLoading(false)
-					alert(error.message)
-				})
+				.catch((error) => alert(error.message))
+				.finally(() => setIsLoading(false))
 		} else {
 			playerService
 				.update({
@@ -43,12 +40,9 @@ export default function PlayersCreate(props: {
 						name: '',
 					})
 					props.refresh()
-					setIsLoading(false)
 				})
-				.catch((error) => {
-					setIsLoading(false)
-					alert(error.message)
-				})
+				.catch((error) => alert(error.message))
+				.finally(() => setIsLoading(false))
 		}
 	}
 

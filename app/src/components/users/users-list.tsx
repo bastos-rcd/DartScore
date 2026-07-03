@@ -4,6 +4,7 @@ import type { User } from '@/models/user'
 
 import { userService } from '@/services/user.service'
 
+import Card from '@/components/card'
 import UsersItem from '@/components/users/users-item'
 
 export default function UsersList(props: {
@@ -22,14 +23,10 @@ export default function UsersList(props: {
 
 	if (users.length === 0) {
 		return (
-			<div className="flex flex-col gap-2 rounded-xl border border-(--border) bg-(--white) p-4 text-center">
-				<p className="font-bold">
-					Aucun utilisateur enregistré pour le moment.
-				</p>
-				<p className="italic opacity-75">
-					Créez un utilisateur pour commencer !
-				</p>
-			</div>
+			<Card
+				title="Aucun utilisateur enregistré"
+				content="Créez un utilisateur pour commencer"
+			/>
 		)
 	}
 

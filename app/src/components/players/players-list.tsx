@@ -4,6 +4,7 @@ import type { Player } from '@/models/player'
 
 import { playerService } from '@/services/player.service'
 
+import Card from '@/components/card'
 import PlayersItem from '@/components/players/players-item'
 
 export default function PlayersList(props: {
@@ -22,10 +23,10 @@ export default function PlayersList(props: {
 
 	if (players.length === 0) {
 		return (
-			<div className="flex flex-col gap-2 rounded-xl border border-(--border) bg-(--white) p-4 text-center">
-				<p className="font-bold">Aucun joueur enregistré pour le moment.</p>
-				<p className="italic opacity-75">Créez un joueur pour commencer !</p>
-			</div>
+			<Card
+				title="Aucun joueur enregistré"
+				content="Créez un joueur pour commencer"
+			/>
 		)
 	}
 

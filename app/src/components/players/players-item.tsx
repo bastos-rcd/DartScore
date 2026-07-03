@@ -11,12 +11,8 @@ export default function PlayersItem(props: {
 		if (confirm('Voulez-vous vraiment supprimer ce joueur ?')) {
 			playerService
 				.remove(props.player.id)
-				.then(() => {
-					props.refresh()
-				})
-				.catch((error) => {
-					alert(error.message)
-				})
+				.then(() => props.refresh())
+				.catch((error) => alert(error.message))
 		}
 	}
 
