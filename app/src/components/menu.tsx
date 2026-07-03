@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { ROLES } from '@/models/user'
 
-import { authStore } from '@/store/auth'
+import { authStore } from '@/store/auth.store'
 
 const Item = (props: { href: string; icon: string }) => {
 	return (

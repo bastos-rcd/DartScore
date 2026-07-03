@@ -1,4 +1,4 @@
-import { authStore } from '@/store/auth'
+import { authStore } from '@/store/auth.store'
 import axios, { type InternalAxiosRequestConfig } from 'axios'
 
 const API_URL = import.meta.env.VITE_API_URL!

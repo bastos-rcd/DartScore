@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import { ROLES } from '@/models/user'
 
-import { authStore } from '@/store/auth'
+import { authStore } from '@/store/auth.store'
 import useAuthInit from '@/hooks/useAuthInit'
 
 import Menu from '@/components/menu'

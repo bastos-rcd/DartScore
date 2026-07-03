@@ -2,7 +2,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 import type { Role } from '@/models/user'
 
-import { authStore } from '@/store/auth'
+import { authStore } from '@/store/auth.store'
 
 export default function ProtectedRoute({
 	allowedRoles,

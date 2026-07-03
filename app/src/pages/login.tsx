@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { authStore } from '@/store/auth'
+import { authStore } from '@/store/auth.store'
 
 export default function Login() {
 	const navigate = useNavigate()

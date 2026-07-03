@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { authStore } from '@/store/auth'
+import { authStore } from '@/store/auth.store'
 
 export default function useAuthInit(): boolean {
 	const [initialized, setInitialized] = useState<boolean>(false)
