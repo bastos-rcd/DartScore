@@ -10,11 +10,12 @@ import Divider from '@/components/divider'
 import ProtectedRoute from '@/components/protected-route'
 
 import Login from '@/pages/login'
+import Profile from '@/pages/profile'
 
 import Home from '@/pages/home'
+import Players from '@/pages/players'
 
 import Users from '@/pages/users'
-import Players from './pages/players'
 
 export default function App() {
 	const { isAuthenticated } = authStore()
@@ -49,6 +50,14 @@ export default function App() {
 
 						<Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
 							<Route path="/users" element={<Users />} />
+						</Route>
+
+						<Route
+							element={
+								<ProtectedRoute allowedRoles={[ROLES.USER, ROLES.ADMIN]} />
+							}
+						>
+							<Route path="/profile" element={<Profile />} />
 						</Route>
 					</Routes>
 				</main>

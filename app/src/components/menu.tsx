@@ -26,19 +26,23 @@ export default function Menu() {
 			)}
 
 			{isAuthenticated && hasRole(ROLES.ADMIN) && (
-				<Item href="/users" icon="fa-solid fa-user-gear fa-xl" />
+				<Item href="/users" icon="fa-solid fa-users-gear fa-xl" />
 			)}
 
 			{isAuthenticated && (
-				<button
-					onClick={() => logout()}
-					className="rounded-2xl bg-(--border) px-2 py-2.5"
-				>
-					<i
-						className="fa-solid fa-arrow-right-from-bracket fa-xl"
-						style={{ color: 'var(--black)' }}
-					></i>
-				</button>
+				<>
+					<Item href="/profile" icon="fa-solid fa-circle-user fa-xl" />
+
+					<button
+						onClick={() => logout()}
+						className="rounded-2xl bg-(--border) px-2 py-2.5"
+					>
+						<i
+							className="fa-solid fa-arrow-right-from-bracket fa-xl"
+							style={{ color: 'var(--black)' }}
+						></i>
+					</button>
+				</>
 			)}
 		</nav>
 	)

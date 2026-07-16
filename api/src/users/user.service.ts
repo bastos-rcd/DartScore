@@ -68,7 +68,7 @@ export class UserService {
 
 	async update(id: number, dto: Partial<User>): Promise<User> {
 		const user = await this.repo.findOne({
-			where: { id, role: 'USER' },
+			where: { id },
 		})
 
 		if (!user) throw new NotFoundException('Utilisateur introuvable !')
