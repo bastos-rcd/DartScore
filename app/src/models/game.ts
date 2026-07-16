@@ -10,6 +10,6 @@ export type Type = (typeof TYPES)[keyof typeof TYPES]
 export interface Game {
 	id: string
 	type: Type
-	date: Date
+	date: string
 	rank: { player: string; score: number }[]
 }

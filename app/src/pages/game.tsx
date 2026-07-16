@@ -15,7 +15,8 @@ import GameTarget from '@/components/game/game-target'
 export default function Game() {
 	const navigate = useNavigate()
 
-	const { status, type, players, classment, darts, saveGame } = gameStore()
+	const { status, type, players, classment, darts, saving, saveGame } =
+		gameStore()
 
 	const [current, setCurrent] = useState<Player>()
 
@@ -59,12 +60,12 @@ export default function Game() {
 		}
 
 		if (!next) {
-			saveGame()
+			if (!saving) saveGame()
 			return
 		}
 
 		setCurrent(next)
-	}, [status, darts, classment])
+	}, [status, darts, classment, saving])
 
 	if (!status) return null
 
