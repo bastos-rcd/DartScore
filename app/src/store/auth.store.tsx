@@ -18,7 +18,7 @@ interface State {
 	login: (credentials: { email: string; password: string }) => Promise<User>
 	me: () => Promise<User | null>
 	logout: () => void
-	hasRole: (role: Role | Role[]) => boolean
+	hasRole: (role: Role) => boolean
 }
 
 export const authStore = create<State>()(
@@ -85,13 +85,9 @@ export const authStore = create<State>()(
 				})
 			},
 
-			hasRole: (role: Role | Role[]) => {
+			hasRole: (role: Role) => {
 				const user = get().user
-				if (!user) return false
-
-				return Array.isArray(role)
-					? role.includes(user.role)
-					: user.role === role
+				return !!user && user.role === role
 			},
 		}),
 		{

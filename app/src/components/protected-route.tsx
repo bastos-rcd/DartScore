@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
-import type { Role } from '@/models/user'
+import { ROLES, type Role } from '@/models/user'
 
 import { authStore } from '@/store/auth.store'
 
@@ -17,7 +17,7 @@ export default function ProtectedRoute({
 		return <Navigate to="/login" state={{ from: location }} replace />
 
 	if (allowedRoles && (!user || !allowedRoles.includes(user.role)))
-		return <Navigate to="/" replace />
+		return <Navigate to={user?.role === ROLES.ADMIN ? '/users' : '/'} replace />
 
 	return <Outlet />
 }

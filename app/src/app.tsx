@@ -42,11 +42,7 @@ export default function App() {
 					<Routes>
 						<Route path="/login" element={<Login />} />
 
-						<Route
-							element={
-								<ProtectedRoute allowedRoles={[ROLES.USER, ROLES.ADMIN]} />
-							}
-						>
+						<Route element={<ProtectedRoute allowedRoles={[ROLES.USER]} />}>
 							<Route path="/" element={<Home />} />
 							<Route path="/players" element={<Players />} />
 						</Route>
