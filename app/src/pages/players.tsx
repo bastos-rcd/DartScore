@@ -2,8 +2,10 @@ import { useState } from 'react'
 
 import type { Player } from '@/models/player'
 
-import PlayersCreate from '@/components/players/player-create'
+import Title from '@/components/title'
 import Divider from '@/components/divider'
+
+import PlayersCreate from '@/components/players/player-create'
 import PlayersList from '@/components/players/players-list'
 
 export default function Players() {
@@ -19,6 +21,10 @@ export default function Players() {
 
 	return (
 		<>
+			<Title title="Liste des joueurs" />
+
+			<Divider />
+
 			<PlayersCreate
 				player={editing}
 				setPlayer={setEditing}

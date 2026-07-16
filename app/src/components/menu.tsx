@@ -21,7 +21,6 @@ export default function Menu() {
 				<>
 					<Item href="/" icon="fa-solid fa-bullseye fa-xl" />
 					<Item href="/players" icon="fa-solid fa-people-group fa-xl" />
-					<Item href="/rank" icon="fa-solid fa-ranking-star fa-xl" />
 				</>
 			)}
 
