@@ -54,7 +54,8 @@ export default function Home() {
 	useEffect(() => {
 		if (!status) return
 
-		if (type == TYPES.X301 || type == TYPES.X501) navigate(`/game`)
+		if (type == TYPES.X201 || type == TYPES.X301 || type == TYPES.X501)
+			navigate(`/game`)
 		else if (type == TYPES.KILLER) navigate(`/killer`)
 	}, [status])
 

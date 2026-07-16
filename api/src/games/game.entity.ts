@@ -15,7 +15,7 @@ export class Game {
 	@PrimaryGeneratedColumn()
 	id: number
 
-	@Column({ length: 10, default: '301', enum: ['301', '501', 'killer'] })
+	@Column({ length: 10, default: '301', enum: ['201', '301', '501', 'killer'] })
 	type: string
 
 	@CreateDateColumn({ type: 'timestamptz' })

@@ -14,6 +14,7 @@ import Profile from '@/pages/profile'
 
 import Home from '@/pages/home'
 import Players from '@/pages/players'
+import Game from '@/pages/game'
 
 import Users from '@/pages/users'
 
@@ -46,6 +47,7 @@ export default function App() {
 						<Route element={<ProtectedRoute allowedRoles={[ROLES.USER]} />}>
 							<Route path="/" element={<Home />} />
 							<Route path="/players" element={<Players />} />
+							<Route path="/game" element={<Game />} />
 						</Route>
 
 						<Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>

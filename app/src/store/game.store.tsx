@@ -2,6 +2,7 @@ import { create } from 'zustand'
 
 import { TYPES, type Type } from '@/models/game'
 import type { Player } from '@/models/player'
+import type { Dart } from '@/models/dart'
 
 interface State {
 	status: boolean
@@ -14,6 +15,16 @@ interface State {
 	setPlayers: (players: Player[]) => void
 	addPlayer: (player: Player) => void
 	removePlayer: (player: Player) => void
+
+	classment: Player[]
+	addClassment: (player: Player) => void
+	removeClassment: (player: Player) => void
+
+	darts: Dart[]
+	addDart: (dart: Dart) => void
+	removeDart: (dart: Dart) => void
+
+	saveGame: () => Promise<void>
 }
 
 export const gameStore = create<State>((set, get) => ({
@@ -31,4 +42,21 @@ export const gameStore = create<State>((set, get) => ({
 		set((state) => ({
 			players: state.players.filter((p) => p.id !== player.id),
 		})),
+
+	classment: [],
+	addClassment: (player: Player) =>
+		set((state) => ({
+			classment: [...state.classment, player],
+		})),
+	removeClassment: (player: Player) =>
+		set((state) => ({
+			classment: state.classment.filter((p) => p.id !== player.id),
+		})),
+
+	darts: [],
+	addDart: (dart: Dart) => set((state) => ({ darts: [...state.darts, dart] })),
+	removeDart: (dart: Dart) =>
+		set((state) => ({ darts: state.darts.filter((d) => d.id !== dart.id) })),
+
+	saveGame: async () => {},
 }))

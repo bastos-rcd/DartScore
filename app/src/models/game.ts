@@ -1,4 +1,5 @@
 export const TYPES = {
+	X201: '201',
 	X301: '301',
 	X501: '501',
 	KILLER: 'KILLER',
