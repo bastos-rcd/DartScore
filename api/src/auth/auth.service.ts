@@ -20,7 +20,7 @@ export class AuthService {
 
 		if (!user) throw new UnauthorizedException('Identifiants invalides !')
 
-		if (!user.active) throw new UnauthorizedException('Droits insuffisants.')
+		if (!user.active) throw new UnauthorizedException('Droits insuffisants !')
 
 		const valid = await bcrypt.compare(dto.password, user.password)
 

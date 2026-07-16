@@ -1,4 +1,10 @@
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	Get,
+	Post,
+	UnauthorizedException,
+} from '@nestjs/common'
 
 import { Public } from '@/auth/public.decorator'
 import { CurrentUser } from '@/auth/current.decorator'
@@ -21,6 +27,9 @@ export class AuthController {
 
 	@Get('me')
 	async me(@CurrentUser() user: User) {
+		if (!user.active) {
+			throw new UnauthorizedException('Droits insuffisants !')
+		}
 		return user
 	}
 }

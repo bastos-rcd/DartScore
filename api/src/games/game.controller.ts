@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 
+import { Roles } from '@/auth/roles.decorator'
 import { CurrentUser } from '@/auth/current.decorator'
 
 import { User } from '@/users/user.entity'
@@ -11,11 +12,13 @@ import { GameService } from '@/games/game.service'
 export class GameController {
 	constructor(private readonly gameService: GameService) {}
 
+	@Roles('USER')
 	@Get()
 	async findAll(@CurrentUser() user: User): Promise<Game[]> {
 		return this.gameService.findAll(user)
 	}
 
+	@Roles('USER')
 	@Get(':id')
 	async findById(
 		@CurrentUser() user: User,
@@ -24,6 +27,7 @@ export class GameController {
 		return this.gameService.findById(user, id)
 	}
 
+	@Roles('USER')
 	@Post()
 	async create(
 		@CurrentUser() user: User,
@@ -32,6 +36,7 @@ export class GameController {
 		return this.gameService.create(user, dto)
 	}
 
+	@Roles('USER')
 	@Delete(':id')
 	async delete(
 		@CurrentUser() user: User,
