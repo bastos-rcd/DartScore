@@ -9,14 +9,15 @@ import Menu from '@/components/menu'
 import Divider from '@/components/divider'
 import ProtectedRoute from '@/components/protected-route'
 
-import Login from '@/pages/login'
-import Profile from '@/pages/profile'
-
 import Home from '@/pages/home'
-import Players from '@/pages/players'
 import Game from '@/pages/game'
+import Players from '@/pages/players'
+import Rank from '@/pages/rank'
 
 import Users from '@/pages/users'
+
+import Login from '@/pages/login'
+import Profile from '@/pages/profile'
 
 export default function App() {
 	const { isAuthenticated } = authStore()
@@ -46,8 +47,9 @@ export default function App() {
 
 						<Route element={<ProtectedRoute allowedRoles={[ROLES.USER]} />}>
 							<Route path="/" element={<Home />} />
-							<Route path="/players" element={<Players />} />
 							<Route path="/game" element={<Game />} />
+							<Route path="/players" element={<Players />} />
+							<Route path="/rank" element={<Rank />} />
 						</Route>
 
 						<Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
