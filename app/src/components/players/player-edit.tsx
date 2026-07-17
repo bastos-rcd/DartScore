@@ -4,7 +4,7 @@ import type { Player } from '@/models/player'
 
 import { playerService } from '@/services/player.service'
 
-export default function PlayersCreate(props: {
+export default function PlayersEdit(props: {
 	player: Player
 	setPlayer: (player: Player) => void
 	refresh: () => void
