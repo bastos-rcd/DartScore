@@ -2,7 +2,7 @@ export const TYPES = {
 	X201: '201',
 	X301: '301',
 	X501: '501',
-	KILLER: 'KILLER',
+	KILLER: 'killer',
 } as const
 
 export type Type = (typeof TYPES)[keyof typeof TYPES]

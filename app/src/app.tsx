@@ -11,6 +11,7 @@ import ProtectedRoute from '@/components/protected-route'
 
 import Home from '@/pages/home'
 import Game from '@/pages/game'
+import Killer from '@/pages/killer'
 import Players from '@/pages/players'
 import Rank from '@/pages/rank'
 import History from '@/pages/history'
@@ -49,6 +50,7 @@ export default function App() {
 						<Route element={<ProtectedRoute allowedRoles={[ROLES.USER]} />}>
 							<Route path="/" element={<Home />} />
 							<Route path="/game" element={<Game />} />
+							<Route path="/killer" element={<Killer />} />
 							<Route path="/players" element={<Players />} />
 							<Route path="/rank" element={<Rank />} />
 							<Route path="/history" element={<History />} />
