@@ -34,7 +34,7 @@ export default function App() {
 
 	return (
 		<Router>
-			<div className="flex h-dvh max-h-dvh flex-col-reverse gap-4 overflow-hidden p-4">
+			<div className="flex h-dvh max-h-dvh w-full flex-col-reverse gap-4 self-center overflow-hidden p-4 sm:w-1/2 lg:w-1/3 xl:w-1/4">
 				{isAuthenticated && (
 					<>
 						<Menu />
