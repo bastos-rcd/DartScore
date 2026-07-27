@@ -13,34 +13,35 @@ import Divider from '@/components/divider'
 export default function Home() {
 	const navigate = useNavigate()
 
+	const [selects, setSelects] = useState<Player[]>([])
 	const [dbPlayers, setdbPlayers] = useState<Player[]>([])
 
-	const {
-		status,
-		setStatus,
-		type,
-		setType,
-		players,
-		setPlayers,
-		addPlayer,
-		removePlayer,
-	} = gameStore()
+	const { status, setStatus, type, setType, setPlayers, setKillers } =
+		gameStore()
 
 	const handleSelect = (player: Player) => {
-		const isSelected = players.some((p) => p.id === player.id)
+		const isSelected = selects.some((p) => p.id === player.id)
 
 		if (isSelected) {
-			const playerToRemove = players.find((p) => p.id === player.id)
-			if (playerToRemove) removePlayer(playerToRemove)
+			const playerToRemove = selects.find((p) => p.id === player.id)
+			if (playerToRemove)
+				setSelects((prev) => prev.filter((p) => p.id !== player.id))
 		} else {
-			addPlayer(player)
+			setSelects((prev) => [...prev, player])
 		}
 	}
 
 	const handleStart = () => {
-		if (players.length === 0) return
+		if (selects.length === 0) return
 
-		setPlayers(players.toSorted(() => Math.random() - 0.5))
+		if (type === TYPES.X201 || type === TYPES.X301 || type === TYPES.X501) {
+			setPlayers(selects.toSorted(() => Math.random() - 0.5))
+		}
+
+		if (type === TYPES.KILLER) {
+			setKillers(selects)
+		}
+
 		setStatus(true)
 	}
 
@@ -74,12 +75,12 @@ export default function Home() {
 				<>
 					<div className="flex w-full flex-row items-center justify-between">
 						<h1 className="text-2xl font-bold">
-							{players.length} joueur(s) sélectionné(s)
+							{selects.length} joueur(s) sélectionné(s)
 						</h1>
 
 						<button
 							onClick={handleStart}
-							disabled={players.length == 0}
+							disabled={selects.length < 2}
 							className="aspect-square self-center rounded-xl bg-(--green) p-2 font-bold disabled:bg-(--green)/50"
 						>
 							<i className="fa-solid fa-play"></i>
@@ -113,7 +114,7 @@ export default function Home() {
 								onClick={() => handleSelect(player)}
 								className="flex h-fit flex-row items-center gap-2 rounded-xl bg-(--border)/60 p-2"
 							>
-								{players.includes(player) ? (
+								{selects.includes(player) ? (
 									<i className="fa-solid fa-circle-check fa-lg"></i>
 								) : (
 									<i className="fa-regular fa-circle fa-lg"></i>

@@ -3,6 +3,8 @@ import { create } from 'zustand'
 import { TYPES, type Game, type Type } from '@/models/game'
 import type { Player } from '@/models/player'
 import type { Dart } from '@/models/dart'
+import type { Killer } from '@/models/killer'
+
 import { gameService } from '@/services/game.service'
 
 interface State {
@@ -12,10 +14,9 @@ interface State {
 	type: Type
 	setType: (type: Type) => void
 
+	// --- X01 ---
 	players: Player[]
 	setPlayers: (players: Player[]) => void
-	addPlayer: (player: Player) => void
-	removePlayer: (player: Player) => void
 
 	classment: Player[]
 	addClassment: (player: Player) => void
@@ -25,6 +26,16 @@ interface State {
 	addDart: (dart: Dart) => void
 	removeDart: (dart: Dart) => void
 
+	// --- KILLER ---
+	killers: Killer[]
+	setKillers: (players: Player[]) => void
+	setNumber: (playerId: string, number: number) => void
+
+	currentKiller: number
+	currentkillerDarts: number
+	killerWinner: string | null
+	registerHit: (number: number, multiplier: number) => void
+
 	saving: boolean
 	saveGame: () => Promise<void>
 }
@@ -33,17 +44,12 @@ export const gameStore = create<State>((set, get) => ({
 	status: false,
 	setStatus: (status: boolean) => set({ status }),
 
-	type: TYPES.X301,
+	type: TYPES.KILLER,
 	setType: (type: Type) => set({ type }),
 
+	// --- X01 ---
 	players: [],
 	setPlayers: (players: Player[]) => set({ players }),
-	addPlayer: (player: Player) =>
-		set((state) => ({ players: [...state.players, player] })),
-	removePlayer: (player: Player) =>
-		set((state) => ({
-			players: state.players.filter((p) => p.id !== player.id),
-		})),
 
 	classment: [],
 	addClassment: (player: Player) =>
@@ -59,6 +65,80 @@ export const gameStore = create<State>((set, get) => ({
 	addDart: (dart: Dart) => set((state) => ({ darts: [...state.darts, dart] })),
 	removeDart: (dart: Dart) =>
 		set((state) => ({ darts: state.darts.filter((d) => d.id !== dart.id) })),
+
+	// --- KILLER ---
+	killers: [],
+	setKillers: (players: Player[]) =>
+		set(() => ({
+			killers: players.map((player) => ({
+				player,
+				number: null,
+				hits: 0,
+				lives: 3,
+			})),
+		})),
+	setNumber: (playerId, number) =>
+		set((state) => ({
+			killers: state.killers.map((k) =>
+				k.player.id === playerId ? { ...k, number } : k,
+			),
+		})),
+
+	currentKiller: 0,
+	currentkillerDarts: 0,
+	killerWinner: null,
+	registerHit: (number, multiplier) => {
+		const { killers, currentKiller, currentkillerDarts, killerWinner } = get()
+
+		if (killerWinner) return
+
+		const active = killers.filter((k) => k.lives > 0)
+		const thrower = active[currentKiller % active.length]
+		if (!thrower) return
+
+		const updated = killers.map((k) => ({ ...k }))
+
+		if (number === thrower.number) {
+			const throwerState = updated.find(
+				(p) => p.player.id === thrower.player.id,
+			)!
+			if (throwerState.hits < 3) {
+				const newHits = Math.min(3, throwerState.hits + multiplier)
+				throwerState.hits = newHits
+			}
+		} else if (thrower.hits === 3) {
+			const target = updated.find(
+				(p) =>
+					p.number === number &&
+					p.lives > 0 &&
+					p.player.id !== thrower.player.id,
+			)
+			if (target) {
+				target.lives = Math.max(0, target.lives - multiplier)
+			}
+		}
+
+		const stillActive = updated.filter((k) => k.lives > 0)
+
+		set({
+			killers: updated,
+		})
+
+		if (stillActive.length <= 1) {
+			set({ killerWinner: stillActive[0]?.player.id ?? null })
+			return
+		}
+
+		const dartsThisTurn = currentkillerDarts + 1
+		if (dartsThisTurn >= 3) {
+			set({
+				currentkillerDarts: 0,
+				currentKiller: (currentKiller + 1) % stillActive.length,
+			})
+		} else {
+			set({ currentkillerDarts: dartsThisTurn })
+		}
+	},
 
 	saving: false,
 	saveGame: async () => {

@@ -6,25 +6,32 @@ import { TYPES } from '@/models/game'
 import { gameStore } from '@/store/game.store'
 
 import Card from '@/components/card'
+import KillerSetup from '@/components/killer/killer-setup'
 
 export default function Killer() {
 	const navigate = useNavigate()
 
-	const { status, setStatus, type, setPlayers } = gameStore()
+	const { status, type, killers } = gameStore()
 
 	useEffect(() => {
 		if (!status || type != TYPES.KILLER) {
 			navigate('/')
 			return
 		}
-
-		setTimeout(() => {
-			setStatus(false)
-			setPlayers([])
-		}, 1500)
 	}, [status, type, navigate])
 
 	if (!status) return null
+
+	const setupDone =
+		killers.length > 0 && killers.every((k) => k.number !== null)
+
+	if (!setupDone) {
+		return (
+			<>
+				<KillerSetup />
+			</>
+		)
+	}
 
 	return (
 		<>
