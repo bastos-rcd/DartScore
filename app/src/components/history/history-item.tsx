@@ -38,13 +38,16 @@ export default function HistoryItem(props: {
 			</div>
 
 			<div className="grid grid-cols-3 gap-1 divide-x divide-(--border)">
-				{podium.map((entry, index) => (
-					<span key={entry.player} className="text-sm">
-						{MEDALS[index]}{' '}
-						{props.players.find((p) => p.id === entry.player)?.name ??
-							'Inconnu'}
-					</span>
-				))}
+				{podium.map(
+					(entry, index) =>
+						entry.score > 0 && (
+							<span key={entry.player} className="text-sm">
+								{MEDALS[index]}{' '}
+								{props.players.find((p) => p.id === entry.player)?.name ??
+									'Inconnu'}
+							</span>
+						),
+				)}
 			</div>
 		</div>
 	)
