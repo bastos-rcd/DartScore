@@ -5,8 +5,10 @@ import { TYPES } from '@/models/game'
 
 import { gameStore } from '@/store/game.store'
 
-import Card from '@/components/card'
+import Divider from '@/components/divider'
 import KillerSetup from '@/components/killer/killer-setup'
+import KillerScore from '@/components/killer/killer-score'
+import KillerTarget from '@/components/killer/killer-target'
 
 export default function Killer() {
 	const navigate = useNavigate()
@@ -35,10 +37,11 @@ export default function Killer() {
 
 	return (
 		<>
-			<Card
-				title="Indisponible"
-				content="Cette fonctionnalité est en cours de développement !"
-			/>
+			<KillerScore />
+
+			<Divider />
+
+			<KillerTarget />
 		</>
 	)
 }

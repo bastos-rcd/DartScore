@@ -33,7 +33,6 @@ interface State {
 
 	currentKiller: number
 	currentkillerDarts: number
-	killerWinner: string | null
 	registerHit: (number: number, multiplier: number) => void
 
 	saving: boolean
@@ -44,7 +43,7 @@ export const gameStore = create<State>((set, get) => ({
 	status: false,
 	setStatus: (status: boolean) => set({ status }),
 
-	type: TYPES.KILLER,
+	type: TYPES.X301,
 	setType: (type: Type) => set({ type }),
 
 	// --- X01 ---
@@ -86,11 +85,8 @@ export const gameStore = create<State>((set, get) => ({
 
 	currentKiller: 0,
 	currentkillerDarts: 0,
-	killerWinner: null,
 	registerHit: (number, multiplier) => {
-		const { killers, currentKiller, currentkillerDarts, killerWinner } = get()
-
-		if (killerWinner) return
+		const { killers, currentKiller, currentkillerDarts } = get()
 
 		const active = killers.filter((k) => k.lives > 0)
 		const thrower = active[currentKiller % active.length]
@@ -125,7 +121,7 @@ export const gameStore = create<State>((set, get) => ({
 		})
 
 		if (stillActive.length <= 1) {
-			set({ killerWinner: stillActive[0]?.player.id ?? null })
+			get().saveGame()
 			return
 		}
 
@@ -142,7 +138,7 @@ export const gameStore = create<State>((set, get) => ({
 
 	saving: false,
 	saveGame: async () => {
-		const { type, players, classment, darts, saving } = get()
+		const { type, players, classment, darts, killers, saving } = get()
 
 		if (saving) return
 
@@ -187,6 +183,21 @@ export const gameStore = create<State>((set, get) => ({
 				})
 			}
 
+			if (type === TYPES.KILLER) {
+				const stillActive = killers.filter((k) => k.lives > 0)
+				const rankedIds = stillActive.map((k) => k.player.id)
+
+				rankedIds.forEach((playerId, index) => {
+					result.push({ player: playerId, score: POINTS[index] ?? 0 })
+				})
+
+				killers.forEach((k) => {
+					if (!result.find((r) => r.player === k.player.id)) {
+						result.push({ player: k.player.id, score: 0 })
+					}
+				})
+			}
+
 			const game: Partial<Game> = {
 				type: type,
 				rank: result,
@@ -199,6 +210,9 @@ export const gameStore = create<State>((set, get) => ({
 				players: [],
 				darts: [],
 				classment: [],
+				killers: [],
+				currentKiller: 0,
+				currentkillerDarts: 0,
 			})
 		} catch (error) {
 			alert('Impossible de sauvegarder la partie.')
