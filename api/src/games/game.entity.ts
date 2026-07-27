@@ -1,9 +1,17 @@
+import { Player } from '@/players/player.entity'
 import {
 	Column,
 	CreateDateColumn,
 	Entity,
 	PrimaryGeneratedColumn,
 } from 'typeorm'
+
+export interface Classment {
+	player: Player
+	score: number
+	podium: number
+	played: number
+}
 
 export interface Rank {
 	player: number

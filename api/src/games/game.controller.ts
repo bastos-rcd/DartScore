@@ -5,12 +5,18 @@ import { CurrentUser } from '@/auth/current.decorator'
 
 import { User } from '@/users/user.entity'
 
-import { Game } from '@/games/game.entity'
+import { Classment, Game } from '@/games/game.entity'
 import { GameService } from '@/games/game.service'
 
 @Controller('games')
 export class GameController {
 	constructor(private readonly gameService: GameService) {}
+
+	@Roles('USER')
+	@Get('rank')
+	async rank(@CurrentUser() user: User): Promise<Classment[]> {
+		return this.gameService.rank(user)
+	}
 
 	@Roles('USER')
 	@Get()
