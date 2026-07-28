@@ -1,30 +1,47 @@
 services:
-  pocketbase:
-    image: ghcr.io/muchobien/pocketbase:latest
-    container_name: pocketbase
+  dartscore-db:
+    image: postgres:16
     ports:
-      - '8090:8090'
+      - "5432:5432"
     environment:
-      - PB_ADMIN_EMAIL=admin@dartscore.fr
-      - PB_ADMIN_PASSWORD=password
-      - TZ=Europe/Paris
+      POSTGRES_DB: dartscoredb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      TZ: Europe/Paris
     volumes:
-      - pb_data:/pb/pb_data
+      - darts_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
 
-  dartscore:
+  dartscore-api:
     build:
-      context: .
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: dartscore-db
+      DB_PORT: 5432
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: dartscoredb
+      JWT_SECRET: defegrnfdeadeozof
+    depends_on:
+      - dartscore-db
+    restart: unless-stopped
+
+  dartscore-app:
+    build:
+      context: ./app
       dockerfile: Dockerfile
       args:
-        - VITE_DB=pocketbase
-        - VITE_PB_URL=http://localhost:8090
-    container_name: dartscore
+        VITE_API_URL: http://localhost:3000
     ports:
-      - '80:80'
+      - "5000:80"
     depends_on:
-      - pocketbase
+      - dartscore-api
     restart: unless-stopped
 
 volumes:
-  pb_data:
+  darts_data:
