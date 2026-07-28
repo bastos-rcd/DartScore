@@ -185,11 +185,27 @@ export const gameStore = create<State>((set, get) => ({
 
 			if (type === TYPES.KILLER) {
 				const stillActive = killers.filter((k) => k.lives > 0)
-				const rankedIds = stillActive.map((k) => k.player.id)
 
-				rankedIds.forEach((playerId, index) => {
-					result.push({ player: playerId, score: POINTS[index] ?? 0 })
-				})
+				let winner: Player | null = null
+
+				if (stillActive.length === 1) {
+					winner = stillActive[0].player
+				} else if (stillActive.length > 1) {
+					const eligible = stillActive.filter((k) => k.hits === 3)
+
+					if (eligible.length > 0) {
+						const maxLives = Math.max(...eligible.map((k) => k.lives))
+						const topPlayers = eligible.filter((k) => k.lives === maxLives)
+
+						if (topPlayers.length === 1) {
+							winner = topPlayers[0].player
+						}
+					}
+				}
+
+				if (winner) {
+					result.push({ player: winner.id, score: POINTS[1] })
+				}
 
 				killers.forEach((k) => {
 					if (!result.find((r) => r.player === k.player.id)) {
