@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+
 import { gameStore } from '@/store/game.store'
 
 export default function KillerScore() {
@@ -6,8 +8,23 @@ export default function KillerScore() {
 	const active = killers.filter((k) => k.lives > 0)
 	const current = active[currentKiller % active.length]
 
+	const containerRef = useRef<HTMLDivElement>(null)
+	const itemRefs = useRef<Record<string, HTMLDivElement | null>>({})
+
+	useEffect(() => {
+		if (!current) return
+
+		const node = itemRefs.current[current.player.id]
+		if (!node) return
+
+		node.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+	}, [current])
+
 	return (
-		<div className="flex flex-1 flex-col gap-2 overflow-y-auto">
+		<div
+			ref={containerRef}
+			className="flex flex-1 flex-col gap-2 overflow-y-auto"
+		>
 			{killers.map((k) => {
 				const isCurrent = k.player.id === current?.player.id
 				const isDead = k.lives === 0
@@ -16,6 +33,9 @@ export default function KillerScore() {
 				return (
 					<div
 						key={k.player.id}
+						ref={(node) => {
+							itemRefs.current[k.player.id] = node
+						}}
 						className={`flex flex-row items-center justify-between gap-2 rounded-xl border border-(--border) p-2 transition-colors ${
 							isDead
 								? 'border-(--border) bg-(--red)/50'
