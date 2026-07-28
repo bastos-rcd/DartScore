@@ -31,5 +31,17 @@ services:
       - dartscore-db
     restart: unless-stopped
 
+  dartscore-app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:3000
+    ports:
+      - "5000:80"
+    depends_on:
+      - dartscore-api
+    restart: unless-stopped
+
 volumes:
   darts_data:
