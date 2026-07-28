@@ -29,11 +29,7 @@ export default function UsersItem(props: {
 
 	return (
 		<div className="flex w-full items-center gap-2 rounded-xl bg-(--border) p-2 text-(--black)">
-			<div className="flex w-full flex-col gap-1">
-				<span className="w-full text-xl font-bold">{props.user.name}</span>
-
-				<span className="w-full">{props.user.email}</span>
-			</div>
+			<span className="w-full text-xl font-bold">{props.user.username}</span>
 
 			<button
 				onClick={handleToggle}

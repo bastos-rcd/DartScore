@@ -40,21 +40,21 @@ export class UserService {
 		return user
 	}
 
-	async findByEmail(email: string) {
+	async findByUsername(username: string) {
 		return this.repo
 			.createQueryBuilder('user')
 			.addSelect('user.password')
-			.where('user.email = :email', { email })
+			.where('user.username = :username', { username })
 			.getOne()
 	}
 
 	async create(dto: Partial<User>): Promise<User> {
-		if (!dto.name || !dto.email || !dto.password)
+		if (!dto.username || !dto.password)
 			throw new BadRequestException('Données requises manquantes !')
 
-		const user = await this.repo.findOne({ where: { email: dto.email } })
+		const user = await this.repo.findOne({ where: { username: dto.username } })
 
-		if (user) throw new ConflictException('Email déjà existant !')
+		if (user) throw new ConflictException('Nom déjà existant !')
 
 		const hashed = await bcrypt.hash(dto.password, 10)
 

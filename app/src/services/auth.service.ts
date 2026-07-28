@@ -4,7 +4,7 @@ import api from '@/services/api'
 
 export const authService = {
 	login: async (credentials: {
-		email: string
+		username: string
 		password: string
 	}): Promise<{ token: string }> => {
 		const { data } = await api.post('/auth/login', credentials)

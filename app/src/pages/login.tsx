@@ -7,7 +7,7 @@ export default function Login() {
 	const navigate = useNavigate()
 	const location = useLocation()
 
-	const [email, setEmail] = useState<string>('')
+	const [username, setUsername] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
 	const [error, setError] = useState<string>('')
 	const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -18,7 +18,7 @@ export default function Login() {
 		setIsLoading(true)
 		setError('')
 
-		if (email.trim() === '' || password.trim() === '') {
+		if (username.trim() === '' || password.trim() === '') {
 			setError('Veuillez remplir tous les champs')
 			setIsLoading(false)
 			return
@@ -27,7 +27,7 @@ export default function Login() {
 		setIsLoading(false)
 
 		try {
-			await login({ email, password })
+			await login({ username, password })
 
 			const from =
 				(location.state as { from?: Location })?.from?.pathname || '/'
@@ -48,14 +48,14 @@ export default function Login() {
 			<h1 className="text-4xl font-bold">Connexion</h1>
 
 			<div className="flex flex-col gap-1">
-				<label htmlFor="email" className="font-medium">
-					Email
+				<label htmlFor="username" className="font-medium">
+					Nom de l'utilisateur
 				</label>
 				<input
 					type="text"
-					id="email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
+					id="username"
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
 					className="rounded-xl border border-(--border) bg-(--white) p-2"
 				/>
 			</div>

@@ -18,15 +18,13 @@ export default function UsersEdit(props: {
 		if (props.user.id === '0') {
 			userService
 				.create({
-					name: props.user.name,
-					email: props.user.email,
+					username: props.user.username,
 					password: props.user.password,
 				})
 				.then(() => {
 					props.setUser({
 						id: '0',
-						name: '',
-						email: '',
+						username: '',
 						password: '',
 						role: 'USER',
 						active: true,
@@ -40,15 +38,13 @@ export default function UsersEdit(props: {
 			userService
 				.update({
 					id: props.user.id,
-					name: props.user.name,
-					email: props.user.email,
+					username: props.user.username,
 					password: props.user.password,
 				})
 				.then(() => {
 					props.setUser({
 						id: '0',
-						name: '',
-						email: '',
+						username: '',
 						password: '',
 						role: 'USER',
 						active: true,
@@ -70,30 +66,15 @@ export default function UsersEdit(props: {
 			className="flex flex-col gap-4"
 		>
 			<div className="flex flex-col gap-1">
-				<label htmlFor="name" className="font-medium">
+				<label htmlFor="username" className="font-medium">
 					Nom de l'utilisateur
 				</label>
 				<input
 					type="text"
-					id="email"
-					value={props.user.name}
+					id="username"
+					value={props.user.username}
 					onChange={(e) =>
-						props.setUser({ ...props.user, name: e.target.value })
-					}
-					className="rounded-xl border border-(--border) bg-(--white) p-2"
-				/>
-			</div>
-
-			<div className="flex flex-col gap-1">
-				<label htmlFor="email" className="font-medium">
-					Email
-				</label>
-				<input
-					type="text"
-					id="email"
-					value={props.user.email}
-					onChange={(e) =>
-						props.setUser({ ...props.user, email: e.target.value })
+						props.setUser({ ...props.user, username: e.target.value })
 					}
 					className="rounded-xl border border-(--border) bg-(--white) p-2"
 				/>

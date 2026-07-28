@@ -12,8 +12,7 @@ export default function Users() {
 	const [refreshKey, setRefreshKey] = useState(0)
 	const [editing, setEditing] = useState<User>({
 		id: '0',
-		name: '',
-		email: '',
+		username: '',
 		password: '',
 		role: 'USER',
 		active: true,

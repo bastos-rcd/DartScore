@@ -13,10 +13,10 @@ export class AuthService {
 	) {}
 
 	async login(dto: {
-		email: string
+		username: string
 		password: string
 	}): Promise<{ token: string }> {
-		const user = await this.userService.findByEmail(dto.email)
+		const user = await this.userService.findByUsername(dto.username)
 
 		if (!user) throw new UnauthorizedException('Identifiants invalides !')
 
@@ -26,7 +26,7 @@ export class AuthService {
 
 		if (!valid) throw new UnauthorizedException('Identifiants invalides !')
 
-		const payload = { sub: user.id, email: user.email, role: user.role }
+		const payload = { sub: user.id, username: user.username, role: user.role }
 
 		return { token: this.jwtService.sign(payload) }
 	}

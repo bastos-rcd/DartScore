@@ -21,8 +21,7 @@ export default function Profile() {
 
 		const update: Partial<User> = {
 			id: user?.id,
-			name: profile.name,
-			email: profile.email,
+			username: profile.username,
 		}
 
 		if (profile.password && profile.password.trim().length < 8)
@@ -57,27 +56,16 @@ export default function Profile() {
 				className="flex flex-col gap-4"
 			>
 				<div className="flex flex-col gap-1">
-					<label htmlFor="name" className="font-medium">
+					<label htmlFor="username" className="font-medium">
 						Votre nom
 					</label>
 					<input
 						type="text"
-						id="email"
-						value={profile.name}
-						onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-						className="rounded-xl border border-(--border) bg-(--white) p-2"
-					/>
-				</div>
-
-				<div className="flex flex-col gap-1">
-					<label htmlFor="email" className="font-medium">
-						Votre email
-					</label>
-					<input
-						type="email"
-						id="email"
-						value={profile.email}
-						onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+						id="username"
+						value={profile.username}
+						onChange={(e) =>
+							setProfile({ ...profile, username: e.target.value })
+						}
 						className="rounded-xl border border-(--border) bg-(--white) p-2"
 					/>
 				</div>
@@ -102,8 +90,7 @@ export default function Profile() {
 				<button
 					disabled={
 						isLoading ||
-						(profile.name === user?.name &&
-							profile.email === user?.email &&
+						(profile.username === user?.username &&
 							(!Object.keys(profile).includes('password') ||
 								profile.password?.trim() === ''))
 					}

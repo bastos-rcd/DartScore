@@ -15,7 +15,7 @@ interface State {
 	isAuthenticated: boolean
 	isLoading: boolean
 
-	login: (credentials: { email: string; password: string }) => Promise<User>
+	login: (credentials: { username: string; password: string }) => Promise<User>
 	me: () => Promise<User | null>
 	logout: () => void
 	hasRole: (role: Role) => boolean
@@ -29,7 +29,7 @@ export const authStore = create<State>()(
 			isAuthenticated: false,
 			isLoading: false,
 
-			login: async (creadential: { email: string; password: string }) => {
+			login: async (creadential: { username: string; password: string }) => {
 				set({ isLoading: true })
 
 				try {
