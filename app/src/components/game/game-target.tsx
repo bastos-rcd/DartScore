@@ -78,7 +78,7 @@ export default function GameTarget(props: { player: Player }) {
 				})
 			}
 
-			speak('bust', props.player)
+			speak(type, 'bust', props.player)
 			return
 		}
 
@@ -97,7 +97,7 @@ export default function GameTarget(props: { player: Player }) {
 				playerId: props.player.id,
 			})
 
-			speak('finish', props.player, totalScore)
+			speak(type, 'finish', props.player, totalScore)
 			return
 		}
 
@@ -110,7 +110,7 @@ export default function GameTarget(props: { player: Player }) {
 
 		if (currentTurnCount === 2) {
 			const turnScore = scoreScoredThisTurn + totalScore
-			speak('turn', props.player, turnScore)
+			speak(type, 'turn', props.player, turnScore)
 		}
 	}
 
