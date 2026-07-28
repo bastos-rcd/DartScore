@@ -7,6 +7,8 @@ import type { Killer } from '@/models/killer'
 
 import { gameService } from '@/services/game.service'
 
+import { speak } from '@/utils/speech'
+
 interface State {
 	status: boolean
 	setStatus: (status: boolean) => void
@@ -101,6 +103,7 @@ export const gameStore = create<State>((set, get) => ({
 			if (throwerState.hits < 3) {
 				const newHits = Math.min(3, throwerState.hits + multiplier)
 				throwerState.hits = newHits
+				speak(TYPES.KILLER, 'hit', thrower.player)
 			}
 		} else if (thrower.hits === 3) {
 			const target = updated.find(
@@ -111,6 +114,11 @@ export const gameStore = create<State>((set, get) => ({
 			)
 			if (target) {
 				target.lives = Math.max(0, target.lives - multiplier)
+				speak(
+					TYPES.KILLER,
+					target.lives === 0 ? 'die' : 'attack',
+					thrower.player,
+				)
 			}
 		}
 
