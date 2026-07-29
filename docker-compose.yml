@@ -16,9 +16,8 @@ services:
   dartscore-api:
     build:
       context: ./api
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
       PORT: 3000
       DB_HOST: dartscore-db
@@ -34,14 +33,23 @@ services:
   dartscore-app:
     build:
       context: ./app
-      dockerfile: Dockerfile
       args:
-        VITE_API_URL: http://localhost:3000
-    ports:
-      - "5000:80"
+        VITE_API_URL: /api
+    expose:
+      - "80"
     depends_on:
       - dartscore-api
     restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "5000:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - dartscore-app
+      - dartscore-api
 
 volumes:
   darts_data:
