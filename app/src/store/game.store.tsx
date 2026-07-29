@@ -117,7 +117,7 @@ export const gameStore = create<State>((set, get) => ({
 				speak(
 					TYPES.KILLER,
 					target.lives === 0 ? 'die' : 'attack',
-					thrower.player,
+					target.lives === 0 ? target.player : thrower.player,
 				)
 			}
 		}
