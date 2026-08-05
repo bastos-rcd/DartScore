@@ -6,6 +6,8 @@ import { TYPES } from '@/models/game'
 import { gameStore } from '@/store/game.store'
 
 import Divider from '@/components/divider'
+import Title from '@/components/title'
+
 import KillerSetup from '@/components/killer/killer-setup'
 import KillerScore from '@/components/killer/killer-score'
 import KillerTarget from '@/components/killer/killer-target'
@@ -37,6 +39,10 @@ export default function Killer() {
 
 	return (
 		<>
+			<Title title={`Partie de KILLER`} />
+
+			<Divider />
+
 			<KillerScore />
 
 			<Divider />
