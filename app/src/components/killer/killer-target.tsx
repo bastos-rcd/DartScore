@@ -39,6 +39,13 @@ export default function KillerTarget() {
 			))}
 
 			<button
+				className="aspect-square rounded-xl border border-(--border) bg-(--red) font-bold"
+				onClick={() => handleClick(0)}
+			>
+				<i className="fa-solid fa-xmark"></i>
+			</button>
+
+			<button
 				className={`col-span-2 rounded-xl border border-(--border) bg-(--blue) font-bold ${multiplier === 2 && 'opacity-50'}`}
 				onClick={() => setMultiplier(multiplier === 2 ? 1 : 2)}
 			>
