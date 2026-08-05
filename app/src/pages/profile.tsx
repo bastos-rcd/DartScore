@@ -24,7 +24,7 @@ export default function Profile() {
 			username: profile.username,
 		}
 
-		if (profile.password && profile.password.trim().length < 8)
+		if (profile.password && profile.password.trim().length >= 8)
 			update.password = profile.password
 
 		userService
