@@ -30,7 +30,7 @@ CREATE TABLE "game"
 CREATE TABLE "message"
 (
     id SERIAL PRIMARY KEY,
-    type VARCHAR(10) NOT NULL,
+    type VARCHAR(10) DEFAULT 'X01', 
     event VARCHAR(10) NOT NULL,
     text TEXT NOT NULL
 );

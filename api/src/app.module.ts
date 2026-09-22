@@ -17,6 +17,9 @@ import { PlayerModule } from '@/players/player.module'
 import { Game } from '@/games/game.entity'
 import { GameModule } from '@/games/game.module'
 
+import { Message } from '@/messages/message.entity'
+import { MessageModule } from '@/messages/message.module'
+
 @Module({
 	imports: [
 		ConfigModule.forRoot({
@@ -29,13 +32,14 @@ import { GameModule } from '@/games/game.module'
 			username: process.env.DB_USER!,
 			password: process.env.DB_PASSWORD!,
 			database: process.env.DB_NAME!,
-			entities: [User, Player, Game],
+			entities: [User, Player, Game, Message],
 			synchronize: false,
 		}),
 		AuthModule,
 		UserModule,
 		PlayerModule,
 		GameModule,
+		MessageModule,
 	],
 	providers: [
 		{
