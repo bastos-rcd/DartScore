@@ -66,7 +66,7 @@ export default function UsersEdit(props: {
 			className="flex flex-col gap-4"
 		>
 			<div className="flex flex-col gap-1">
-				<label htmlFor="username" className="font-medium">
+				<label htmlFor="username" className="font-bold">
 					Nom de l'utilisateur
 				</label>
 				<input
@@ -81,7 +81,7 @@ export default function UsersEdit(props: {
 			</div>
 
 			<div className="flex flex-col gap-1">
-				<label htmlFor="password" className="font-medium">
+				<label htmlFor="password" className="font-bold">
 					Mot de passe
 				</label>
 				<input

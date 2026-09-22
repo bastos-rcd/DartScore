@@ -55,7 +55,7 @@ export default function PlayersEdit(props: {
 			className="flex flex-row items-end gap-4"
 		>
 			<div className="flex w-full flex-col gap-1">
-				<label htmlFor="name" className="font-medium">
+				<label htmlFor="name" className="font-bold">
 					Nom du joueur
 				</label>
 				<input

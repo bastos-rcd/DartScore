@@ -70,7 +70,7 @@ export default function MessagesEdit(props: {
 		>
 			<div className="flex flex-row items-end gap-4">
 				<div className="flex w-full flex-col gap-1">
-					<label htmlFor="type" className="text-xl font-bold">
+					<label htmlFor="type" className="font-bold">
 						Type
 					</label>
 					<select
@@ -93,7 +93,7 @@ export default function MessagesEdit(props: {
 				</div>
 
 				<div className="flex w-full flex-col gap-1">
-					<label htmlFor="event" className="text-xl font-bold">
+					<label htmlFor="event" className="font-bold">
 						Catégorie
 					</label>
 					<select
@@ -129,7 +129,7 @@ export default function MessagesEdit(props: {
 			</div>
 
 			<div className="flex w-full flex-col gap-1">
-				<label htmlFor="text" className="font-medium">
+				<label htmlFor="text" className="font-bold">
 					Texte du message
 				</label>
 				<input
