@@ -56,7 +56,7 @@ export default function Profile() {
 				className="flex flex-col gap-4"
 			>
 				<div className="flex flex-col gap-1">
-					<label htmlFor="username" className="font-medium">
+					<label htmlFor="username" className="font-bold">
 						Votre nom
 					</label>
 					<input
@@ -71,7 +71,7 @@ export default function Profile() {
 				</div>
 
 				<div className="flex flex-col gap-1">
-					<label htmlFor="password" className="font-medium">
+					<label htmlFor="password" className="font-bold">
 						Nouveau mot de passe
 					</label>
 					<input

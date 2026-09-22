@@ -5,7 +5,7 @@ import type { Player } from '@/models/player'
 import Title from '@/components/title'
 import Divider from '@/components/divider'
 
-import PlayersEdit from '@/components/players/player-edit'
+import PlayersEdit from '@/components/players/players-edit'
 import PlayersList from '@/components/players/players-list'
 
 export default function Players() {

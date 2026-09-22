@@ -26,3 +26,11 @@ CREATE TABLE "game"
     rank JSONB NOT NULL DEFAULT '[]',
     user_id INTEGER REFERENCES "user"(id) ON DELETE CASCADE
 );
+
+CREATE TABLE "message"
+(
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(10) DEFAULT 'X01', 
+    event VARCHAR(10) NOT NULL,
+    text TEXT NOT NULL
+);

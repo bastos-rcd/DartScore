@@ -111,7 +111,8 @@ export default function GameTarget(props: { player: Player }) {
 		if (currentTurnCount === 2) {
 			const turnScore = scoreScoredThisTurn + totalScore
 
-			if (turnScore <= 12) speak(type, 'null', props.player, turnScore)
+			if (turnScore <= 20) speak(type, 'low', props.player, turnScore)
+			else if (turnScore >= 60) speak(type, 'high', props.player, turnScore)
 			else speak(type, 'turn', props.player, turnScore)
 		}
 	}
