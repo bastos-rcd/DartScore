@@ -17,6 +17,7 @@ import Rank from '@/pages/rank'
 import History from '@/pages/history'
 
 import Users from '@/pages/users'
+import Messages from '@/pages/messages'
 
 import Login from '@/pages/login'
 import Profile from '@/pages/profile'
@@ -58,6 +59,7 @@ export default function App() {
 
 						<Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
 							<Route path="/users" element={<Users />} />
+							<Route path="/messages" element={<Messages />} />
 						</Route>
 
 						<Route

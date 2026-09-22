@@ -27,7 +27,10 @@ export default function Menu() {
 			)}
 
 			{isAuthenticated && hasRole(ROLES.ADMIN) && (
-				<Item href="/users" icon="fa-solid fa-users-gear fa-xl" />
+				<>
+					<Item href="/users" icon="fa-solid fa-users-gear fa-xl" />
+					<Item href="/messages" icon="fa-solid fa-volume fa-xl" />
+				</>
 			)}
 
 			{isAuthenticated && (
