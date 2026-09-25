@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 
 import { Roles } from '@/auth/roles.decorator'
+import { Public } from '@/auth/public.decorator'
 
 import { Message } from '@/messages/message.entity'
 import { MessageService } from '@/messages/message.service'
@@ -9,7 +10,7 @@ import { MessageService } from '@/messages/message.service'
 export class MessageController {
 	constructor(private readonly messageService: MessageService) {}
 
-	@Roles('ADMIN')
+	@Public()
 	@Get()
 	async findAll(): Promise<Message[]> {
 		return this.messageService.findAll()
@@ -27,6 +28,7 @@ export class MessageController {
 		return this.messageService.create(dto)
 	}
 
+	@Roles('ADMIN')
 	@Put(':id')
 	async update(
 		@Param('id') id: number,
@@ -39,13 +41,5 @@ export class MessageController {
 	@Delete(':id')
 	async delete(@Param('id') id: number): Promise<Message> {
 		return this.messageService.delete(id)
-	}
-
-	@Roles('USER')
-	@Post('random')
-	async random(
-		@Body() dto: { event: string; type: string },
-	): Promise<Message | null> {
-		return this.messageService.random(dto.event, dto.type)
 	}
 }

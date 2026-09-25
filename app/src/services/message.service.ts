@@ -30,13 +30,4 @@ export const messageService = {
 	remove: async (id: string): Promise<void> => {
 		await api.delete(`/messages/${id}`)
 	},
-
-	random: async (type: string, event: string): Promise<Message | null> => {
-		const { data } = await api.post('/messages/random', {
-			type,
-			event,
-		})
-
-		return data
-	},
 }

@@ -2,20 +2,8 @@ import type { Player } from '@/models/player'
 import { TYPES, type Type } from '@/models/game'
 import type { Event, Message } from '@/models/message'
 
-import { messageService } from '@/services/message.service'
+import { pickMessage } from '@/utils/message'
 
-export function speak(
-	type: Type,
-	event: Event,
-	player: Player,
-	score?: number,
-): void
-export function speak(
-	type: typeof TYPES.KILLER,
-	event: Event,
-	player: Player,
-	score?: number,
-): void
 export async function speak(
 	type: Type,
 	event: Event,
@@ -27,9 +15,9 @@ export async function speak(
 	let message: Message | null
 
 	if (type === TYPES.X201 || type === TYPES.X301 || type === TYPES.X501) {
-		message = await messageService.random('X01', event)
+		message = pickMessage('X01', event)
 	} else if (type === TYPES.KILLER) {
-		message = await messageService.random('KILLER', event)
+		message = pickMessage('KILLER', event)
 	} else {
 		return
 	}
