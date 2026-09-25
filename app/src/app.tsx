@@ -1,9 +1,11 @@
+import { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import { ROLES } from '@/models/user'
 
 import { authStore } from '@/store/auth.store'
 import useAuthInit from '@/hooks/useAuthInit'
+import { preloadMessages } from '@/utils/message'
 
 import Menu from '@/components/menu'
 import Divider from '@/components/divider'
@@ -26,6 +28,10 @@ export default function App() {
 	const { isAuthenticated } = authStore()
 
 	const initialized = useAuthInit()
+
+	useEffect(() => {
+		if (isAuthenticated) preloadMessages()
+	}, [isAuthenticated])
 
 	if (!initialized)
 		return (

@@ -58,16 +58,4 @@ export class MessageService {
 
 		return await this.repo.remove(message)
 	}
-
-	async random(event: string, type: string): Promise<Message | null> {
-		const messages = await this.repo.find({
-			where: { event, type },
-		})
-
-		if (messages.length === 0) return null
-
-		const random = Math.floor(Math.random() * messages.length)
-
-		return messages[random]
-	}
 }
