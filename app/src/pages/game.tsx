@@ -10,6 +10,7 @@ import Divider from '@/components/divider'
 import Title from '@/components/title'
 
 import GameScore from '@/components/game/game-score'
+import GameCheckout from '@/components/game/game-checkout'
 import GameTarget from '@/components/game/game-target'
 
 export default function Game() {
@@ -78,6 +79,8 @@ export default function Game() {
 			<GameScore current={current ?? players[0]} />
 
 			<Divider />
+
+			<GameCheckout player={current ?? players[0]} />
 
 			<GameTarget player={current ?? players[0]} />
 		</>
