@@ -4,8 +4,11 @@ export interface CheckoutDart {
 	cost: number
 }
 
-const MAX_SUGGESTIONS = 3
+// Nombre maximum de chemins proposés
+const MAX_ROUTES = 3
 
+// Toutes les fléchettes possibles, de la plus forte à la plus faible.
+// "cost" = difficulté : à score égal, on préfère un simple à un double, un double à un triple.
 const DARTS: CheckoutDart[] = (() => {
 	const list: CheckoutDart[] = []
 
@@ -21,34 +24,49 @@ const DARTS: CheckoutDart[] = (() => {
 	return list.sort((a, b) => b.score - a.score || a.cost - b.cost)
 })()
 
+const MAX_SCORE = DARTS[0].score
+
 const routeCost = (route: CheckoutDart[]) =>
 	route.reduce((acc, dart) => acc + dart.cost, 0)
 
-const bestFinish = (
+const distinctTargets = (route: CheckoutDart[]) =>
+	new Set(route.map((dart) => dart.label)).size
+
+/**
+ * Renvoie les meilleures façons de finir, chacune sous forme de séquence complète
+ * (ex : 40 → [D20], [20 20], ...).
+ * Tri : moins de fléchettes, puis cibles répétées (20 20 plutôt que 19 1),
+ * puis cibles les plus faciles, puis la plus forte fléchette en premier.
+ * Renvoie [] si on ne peut pas finir avec les fléchettes restantes.
+ */
+export function suggestDarts(
 	remaining: number,
 	dartsLeft: number,
-): CheckoutDart[] | null => {
-	let best: CheckoutDart[] | null = null
+): CheckoutDart[][] {
+	if (remaining <= 0 || dartsLeft <= 0) return []
+	if (remaining > MAX_SCORE * dartsLeft) return []
 
+	const routes: CheckoutDart[][] = []
+
+	// Les fléchettes sont parcourues dans l'ordre décroissant (start),
+	// ce qui évite les doublons du type "20 D10" / "D10 20".
 	const walk = (start: number, rest: number, route: CheckoutDart[]) => {
 		if (rest === 0) {
-			if (
-				!best ||
-				route.length < best.length ||
-				(route.length === best.length && routeCost(route) < routeCost(best))
-			)
-				best = route
+			routes.push(route)
 			return
 		}
 
 		if (route.length === dartsLeft) return
+
+		const dartsRemaining = dartsLeft - route.length
 
 		for (let i = start; i < DARTS.length; i++) {
 			const dart = DARTS[i]
 
 			if (dart.score > rest) continue
 
-			if (dart.score * (dartsLeft - route.length) < rest) break
+			// Les fléchettes suivantes sont plus faibles : impossible d'atteindre "rest"
+			if (dart.score * dartsRemaining < rest) break
 
 			walk(i, rest - dart.score, [...route, dart])
 		}
@@ -56,42 +74,13 @@ const bestFinish = (
 
 	walk(0, remaining, [])
 
-	return best
-}
-
-export function suggestDarts(
-	remaining: number,
-	dartsLeft: number,
-): CheckoutDart[] {
-	if (remaining <= 0 || dartsLeft <= 0) return []
-
-	const candidates = DARTS.filter((dart) => dart.score <= remaining)
-		.map((dart) => {
-			const rest = remaining - dart.score
-			const next = rest === 0 ? [] : bestFinish(rest, dartsLeft - 1)
-
-			return { dart, rest, next }
-		})
-		.filter((c) => c.next !== null)
-		.sort((a, b) => {
-			const darts = a.next!.length - b.next!.length
-			if (darts !== 0) return darts
-
-			const cost =
-				a.dart.cost + routeCost(a.next!) - (b.dart.cost + routeCost(b.next!))
-			if (cost !== 0) return cost
-
-			return b.dart.score - a.dart.score
-		})
-
-	if (candidates.length === 0) {
-		const dart = DARTS.find((d) => d.score <= remaining)!
-
-		return [dart]
-	}
-
-	const direct = candidates.filter((c) => c.rest === 0)
-	const pool = direct.some((c) => c.dart.cost < 3) ? direct : candidates
-
-	return pool.slice(0, MAX_SUGGESTIONS).map((c) => c.dart)
+	return routes
+		.sort(
+			(a, b) =>
+				a.length - b.length ||
+				distinctTargets(a) - distinctTargets(b) ||
+				routeCost(a) - routeCost(b) ||
+				b[0].score - a[0].score,
+		)
+		.slice(0, MAX_ROUTES)
 }
