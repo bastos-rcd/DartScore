@@ -9,7 +9,7 @@ import { suggestDarts } from '@/utils/checkout'
 export default function GameCheckout(props: { player: Player }) {
 	const { type, darts } = gameStore()
 
-	const suggestions = useMemo(() => {
+	const routes = useMemo(() => {
 		const thrown = darts.filter((d) => d.playerId === props.player.id)
 		const remaining = Number(type) - thrown.reduce((a, b) => a + b.score, 0)
 		const dartsLeft = 3 - (thrown.length % 3)
@@ -17,15 +17,24 @@ export default function GameCheckout(props: { player: Player }) {
 		return suggestDarts(remaining, dartsLeft)
 	}, [type, darts, props.player])
 
+	if (routes.length === 0) return null
+
 	return (
-		<div className="flex flex-row justify-center gap-4">
-			{suggestions.map((suggestion) => (
-				<span
-					key={suggestion.label}
-					className="flex aspect-square items-center justify-center rounded-xl border border-(--border) bg-(--border)/50 p-2 font-bold"
+		<div className="flex flex-row flex-wrap justify-center gap-2">
+			{routes.map((route) => (
+				<div
+					key={route.map((dart) => dart.label).join('-')}
+					className="flex flex-row gap-1 rounded-xl border border-(--border) p-1"
 				>
-					{suggestion.label}
-				</span>
+					{route.map((dart, index) => (
+						<span
+							key={index}
+							className="flex min-w-9 items-center justify-center rounded-lg bg-(--border)/50 px-1.5 py-1 font-bold"
+						>
+							{dart.label}
+						</span>
+					))}
+				</div>
 			))}
 		</div>
 	)
